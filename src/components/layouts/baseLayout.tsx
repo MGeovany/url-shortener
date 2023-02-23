@@ -1,0 +1,28 @@
+import Head from "next/head";
+import { ReactNode } from "react";
+
+interface BaseLayoutProps {
+  children: ReactNode;
+  title?: string;
+}
+const BaseLayout = ({
+  children,
+  title = "zoro.cut | URL Shortener",
+}: BaseLayoutProps) => {
+  return (
+    <>
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" href="/favicon.ico" />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+      </Head>
+      <main className="bg-[url('/bg/8.png')] md:bg-auto xs:bg-cover">
+        {children}
+      </main>
+    </>
+  );
+};
+
+export default BaseLayout;
