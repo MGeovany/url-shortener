@@ -1,8 +1,38 @@
 import BaseLayout from "@/components/layouts/baseLayout";
+import Navbar from "@/components/layouts/navbar";
+import React, { useRef, useState } from "react";
 
+interface Shortener {
+  shortUrl: string;
+  url: string;
+}
 export default function Home() {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [shortUrl, setShortUrl] = useState<Shortener>({
+    shortUrl: "",
+    url: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const url = inputRef.current?.value;
+
+    fetch("/api/shortUrl", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setShortUrl(res);
+        console.log(shortUrl);
+      });
+  };
   return (
     <>
+      <Navbar />
       <BaseLayout>
         <div className="h-screen flex flex-col justify-center items-center font-bold text-2xl">
           <picture>
@@ -16,7 +46,7 @@ export default function Home() {
             zoro.<span className="text text-green-400">cut</span>
           </h1>
           <p className="mb-10">URL Shortener 🔗</p>
-          <form className="">
+          <form onSubmit={handleSubmit}>
             <div className="flex md:flex-row sm:flex-col xs:flex-col">
               <div className="group relative w-72">
                 <svg
@@ -33,14 +63,18 @@ export default function Home() {
                   />
                 </svg>
                 <input
-                  className="focus:ring-2 focus:ring-green-500 focus:outline-none appearance-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
                   type="text"
                   aria-label="Url"
+                  ref={inputRef}
                   placeholder="Enter an URL"
+                  className="focus:ring-2 focus:ring-green-500 focus:outline-none appearance-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
                 />
               </div>
 
-              <button className="w-32 xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-600 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm">
+              <button
+                type="submit"
+                className="w-32 xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-600 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
+              >
                 <svg
                   width="20"
                   height="20"
@@ -54,6 +88,9 @@ export default function Home() {
               </button>
             </div>
           </form>
+          <div className="mt-10">
+            <span>Short URL: {shortUrl?.shortUrl}</span>
+          </div>
         </div>
       </BaseLayout>
     </>
