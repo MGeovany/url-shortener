@@ -1,5 +1,7 @@
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useRef } from "react";
+import { useSignInModal } from "../layouts/signInModal";
+import UserDropdown from "../layouts/userDropdown";
 
 const routes = [
   {
@@ -8,13 +10,10 @@ const routes = [
   },
 ];
 
-/* const { data: session, status } = useSession();
-const { SignInModal, setShowSignInModal } = useSignInModal(); */
-
-let session: any,
-  status = "";
-
 const Navbar = () => {
+  const { data: session, status } = useSession();
+  const { SignInModal, setShowSignInModal } = useSignInModal();
+
   return (
     <div className="fixed w-full">
       <div className={`fixed md:px-10 top-0 w-full z-30 transition-all`}>
@@ -29,17 +28,16 @@ const Navbar = () => {
               <li>
                 <button
                   className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
-                  /*   onClick={() => setShowSignInModal(true)} */
+                  onClick={() => setShowSignInModal(true)}
                 >
                   Sign In
                 </button>
               </li>
             ) : (
-              /*  <UserDropdown /> */
-              <div>s</div>
+              <UserDropdown />
             )}
           </ul>
-          {/* <SignInModal /> */}
+          <SignInModal />
         </div>
       </div>
     </div>

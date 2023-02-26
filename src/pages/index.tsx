@@ -1,5 +1,5 @@
 import BaseLayout from "@/components/layouts/baseLayout";
-import Navbar from "@/components/layouts/navbar";
+import Navbar from "@/components/shared/navbar";
 import React, { useRef, useState } from "react";
 
 interface Shortener {
@@ -16,18 +16,16 @@ export default function Home() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const url = inputRef.current?.value;
-
     fetch("/api/shortUrl", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify(url),
     })
       .then((res) => res.json())
       .then((res) => {
-        setShortUrl(res);
-        console.log(shortUrl);
+        setShortUrl({ shortUrl: res.data.shortUrl, url: res.data.data });
       });
   };
   return (
@@ -88,8 +86,17 @@ export default function Home() {
               </button>
             </div>
           </form>
-          <div className="mt-10">
-            <span>Short URL: {shortUrl?.shortUrl}</span>
+          <div className="mt-10 text-center">
+            <span>Short URL:</span>
+            <p>
+              <a
+                className="text-blue-600"
+                href={shortUrl?.shortUrl}
+                target="_blank"
+              >
+                zoro.cut/{shortUrl?.shortUrl}
+              </a>
+            </p>
           </div>
         </div>
       </BaseLayout>

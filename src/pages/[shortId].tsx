@@ -1,6 +1,5 @@
 import React from "react";
 import { PrismaClient } from "@prisma/client";
-import { GetServerSideProps } from "next";
 
 interface Props {
   shortId: string;
