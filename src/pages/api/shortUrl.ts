@@ -29,7 +29,6 @@ export default async function handler(
 
     if (email) userDB = await getUserByEmail(email);
 
-    console.log("user data", userDB);
     const data = await createShortLink(url, shortUrl, userDB.id);
 
     return res.status(200).json({ data });

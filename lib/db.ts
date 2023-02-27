@@ -38,7 +38,6 @@ export const createShortLink = async (
   });
 
   await prisma.$disconnect();
-  console.log("im link data", linkData);
   return linkData;
 };
 

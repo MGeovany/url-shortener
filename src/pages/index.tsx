@@ -1,5 +1,7 @@
 import BaseLayout from "@/components/layouts/baseLayout";
+import CopyButton from "@/components/shared/copyButton";
 import Navbar from "@/components/shared/navbar";
+import { BASE_URL, BASE_URL_PRODUCTION } from "@/utils/constants";
 import React, { useRef, useState } from "react";
 
 interface Shortener {
@@ -26,6 +28,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((res) => {
         setShortUrl({ shortUrl: res.data.shortUrl, url: res.data.data });
+        if (inputRef.current) inputRef.current.value = "";
       });
   };
   return (
@@ -36,7 +39,7 @@ export default function Home() {
           <picture>
             <img
               className="m-0 h-48 rounded-2xl object-cover w-full"
-              src="/zoro/zorop.png"
+              src="/zoro/zoroP.png"
               alt={"zoro"}
             />
           </picture>
@@ -46,29 +49,15 @@ export default function Home() {
           <p className="mb-10">URL Shortener 🔗</p>
           <form onSubmit={handleSubmit}>
             <div className="flex md:flex-row sm:flex-col xs:flex-col">
-              <div className="group relative w-72">
-                <svg
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  className="absolute left-3 top-1/2 -mt-2.5 text-slate-400 pointer-events-none group-focus-within:text-green-500"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                  />
-                </svg>
+              <div className="w-72">
                 <input
                   type="text"
                   aria-label="Url"
                   ref={inputRef}
                   placeholder="Enter an URL"
-                  className="focus:ring-2 focus:ring-green-500 focus:outline-none appearance-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
+                  className="z-0 focus:ring-green-500 focus:outline-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-5 ring-1 ring-slate-200 shadow-sm"
                 />
               </div>
-
               <button
                 type="submit"
                 className="w-32 xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-600 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
@@ -87,15 +76,17 @@ export default function Home() {
             </div>
           </form>
           <div className="mt-10 text-center">
-            <span>Short URL:</span>
-            <p>
+            <span>Your recent URLs</span>
+            <p className="flex flex-row mt-5">
               <a
-                className="text-blue-600"
+                className="text-blue-600 mx-3 justify-center items-center"
                 href={shortUrl?.shortUrl}
                 target="_blank"
               >
-                zoro.cut/{shortUrl?.shortUrl}
+                {BASE_URL_PRODUCTION}
+                {shortUrl?.shortUrl}
               </a>
+              <CopyButton textToCopy={`${BASE_URL}${shortUrl?.shortUrl}`} />
             </p>
           </div>
         </div>

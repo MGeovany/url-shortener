@@ -22,10 +22,9 @@ const SignInModal = ({
     <Modal showModal={showSignInModal} setShowModal={setShowSignInModal}>
       <div className="overflow-x-hidden w-full  shadow-xl md:max-w-md rounded-2xl border border-gray-200">
         <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center md:px-16">
-          <div className="text-black font-bold text-2xl">Gas Saver 🤝</div>
+          <div className="text-black font-bold text-2xl">zoro.cut</div>
           <p className="text-sm text-gray-500">
-            This is strictly for demo purposes - only your email and profile
-            picture will be stored.
+            Sign in with your account to get track of your short links
           </p>
         </div>
 
