@@ -1,8 +1,7 @@
 import BaseLayout from "@/components/layouts/baseLayout";
-import CopyButton from "@/components/shared/copyButton";
-import Navbar from "@/components/shared/navbar";
+import { Navbar, CopyButton } from "@/components/shared";
 import { BASE_URL, BASE_URL_PRODUCTION } from "@/utils/constants";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface Shortener {
   shortUrl: string;
@@ -14,6 +13,12 @@ export default function Home() {
     shortUrl: "",
     url: "",
   });
+
+  useEffect(() => {
+    const getRecentUrls = () => {};
+
+    getRecentUrls();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

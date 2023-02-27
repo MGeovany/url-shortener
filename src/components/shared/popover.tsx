@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, ReactNode } from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-export default function Popover({
+export function Popover({
   children,
   content,
   align = "center",

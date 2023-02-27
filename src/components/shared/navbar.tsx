@@ -10,7 +10,7 @@ const routes = [
   },
 ];
 
-const Navbar = () => {
+export function Navbar() {
   const { data: session, status } = useSession();
   const { SignInModal, setShowSignInModal } = useSignInModal();
 
@@ -42,6 +42,4 @@ const Navbar = () => {
       </div>
     </div>
   );
-};
-
-export default Navbar;
+}

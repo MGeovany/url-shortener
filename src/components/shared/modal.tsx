@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function Modal({
+export function Modal({
   children,
   showModal,
   setShowModal,

@@ -6,8 +6,8 @@ import {
   useCallback,
   useMemo,
 } from "react";
+import { Modal } from "../shared";
 import { Google, LoadingCircle } from "../shared/icons";
-import Modal from "../shared/modal";
 
 const SignInModal = ({
   showSignInModal,

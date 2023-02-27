@@ -7,7 +7,7 @@ type CopyButtonProps = {
   successText?: string;
 };
 
-export default function CopyButton({
+export function CopyButton({
   textToCopy,
   buttonText = "Copy",
   successText = "Copied!",
