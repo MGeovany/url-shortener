@@ -1,24 +1,35 @@
-import BaseLayout from "@/components/layouts/baseLayout";
+import React, { useRef, useState } from "react";
 import { Navbar, CopyButton } from "@/components/shared";
 import { BASE_URL, BASE_URL_PRODUCTION } from "@/utils/constants";
-import React, { useEffect, useRef, useState } from "react";
+import BaseLayout from "@/components/layouts/baseLayout";
+import { getUserByEmail } from "lib/db";
+import { GetServerSidePropsContext } from "next";
+import { getSession } from "next-auth/react";
+
+import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 
 interface Shortener {
   shortUrl: string;
   url: string;
 }
-export default function Home() {
+interface Link {
+  id: number;
+  userId: number;
+  url: string;
+  shortUrl: string;
+  createdAt: string;
+}
+
+interface HomeProps {
+  links: Link[];
+}
+
+export default function Home({ links }: HomeProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [shortUrl, setShortUrl] = useState<Shortener>({
     shortUrl: "",
     url: "",
   });
-
-  useEffect(() => {
-    const getRecentUrls = () => {};
-
-    getRecentUrls();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,6 +47,7 @@ export default function Home() {
         if (inputRef.current) inputRef.current.value = "";
       });
   };
+  console.log(links);
   return (
     <>
       <Navbar />
@@ -82,20 +94,63 @@ export default function Home() {
           </form>
           <div className="mt-10 text-center">
             <span>Your recent URLs</span>
-            <p className="flex flex-row mt-5">
-              <a
-                className="text-blue-600 mx-3 justify-center items-center"
-                href={shortUrl?.shortUrl}
-                target="_blank"
-              >
-                {BASE_URL_PRODUCTION}
-                {shortUrl?.shortUrl}
-              </a>
-              <CopyButton textToCopy={`${BASE_URL}${shortUrl?.shortUrl}`} />
-            </p>
+            <table className="table-auto mt-5">
+              <thead className=" bg-slate-800">
+                <tr className="text-md">
+                  <th>domain</th>
+                  <th>url</th>
+                  <th>actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {links.map((link, index) => (
+                  <tr key={index} className="text-md">
+                    <td className="text-left">
+                      {getDomainNameFromUrl(link.url)}
+                    </td>
+                    <td>
+                      <div className="flex flex-row">
+                        <a
+                          className="text-blue-600 mx-3 justify-center items-center"
+                          href={link?.shortUrl}
+                          target="_blank"
+                        >
+                          {BASE_URL_PRODUCTION}
+                          {link.shortUrl}
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <CopyButton
+                        textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </BaseLayout>
     </>
   );
 }
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getSession(context);
+
+  const email = session?.user?.email;
+  let response: any;
+  console.log(email);
+  if (email) response = await getUserByEmail(email);
+  console.log("IM_RESPONSE", response);
+
+  return {
+    props: {
+      links: response ? JSON.parse(JSON.stringify(response.links)) : [],
+      session,
+    },
+  };
+};
