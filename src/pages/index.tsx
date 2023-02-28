@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Navbar, CopyButton } from "@/components/shared";
 import { BASE_URL, BASE_URL_PRODUCTION } from "@/utils/constants";
 import BaseLayout from "@/components/layouts/baseLayout";
-import { getUserByEmail } from "lib/db";
+import { getRecentUrls, getUserByEmail } from "lib/db";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -12,6 +12,7 @@ import { RecentUrlsTable } from "@/components/shared/recentUrlsTable";
 import { Session } from "next-auth";
 import { useSignInModal } from "../components/layouts/signInModal";
 import { Footer } from "@/components/layouts/footer";
+import { Plus } from "lucide-react";
 
 interface Shortener {
   shortUrl: string;
@@ -25,9 +26,18 @@ interface Link {
   createdAt: string;
 }
 
+interface User {
+  email: string;
+  image: string;
+  name: string;
+}
+interface UserSession {
+  expires: string;
+  user: User;
+}
 interface HomeProps {
   links: Link[];
-  userSession: Session;
+  userSession: UserSession;
 }
 
 export default function Home({ links, userSession }: HomeProps) {
@@ -40,7 +50,6 @@ export default function Home({ links, userSession }: HomeProps) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
 
   const router = useRouter();
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const url = inputRef.current?.value;
@@ -53,7 +62,7 @@ export default function Home({ links, userSession }: HomeProps) {
     })
       .then((res) => res.json())
       .then((res) => {
-        setShortUrl({ shortUrl: res.data.shortUrl, url: res.data.data });
+        // setShortUrl({ shortUrl: res.data.shortUrl, url: res.data.data });
         if (inputRef.current) inputRef.current.value = "";
         router.push("/");
       });
@@ -86,23 +95,15 @@ export default function Home({ links, userSession }: HomeProps) {
               </div>
               <button
                 type="submit"
-                className="w-32 xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-600 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
+                className="w-32 xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-00 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
               >
-                <svg
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  className="mr-2"
-                  aria-hidden="true"
-                >
-                  <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
-                </svg>
+                <Plus />
                 New URL
               </button>
             </div>
           </form>
           {userSession ? (
-            <RecentUrlsTable links={links} />
+            <RecentUrlsTable links={links} email={userSession.user.email} />
           ) : (
             <p className="mt-12 text-md">
               <a
@@ -128,9 +129,7 @@ export const getServerSideProps = async (
 
   const email = session?.user?.email;
   let response: any;
-  console.log(email);
-  if (email) response = await getUserByEmail(email);
-  console.log("THIS_IS_REAL", session);
+  if (email) response = await getRecentUrls(email);
   return {
     props: {
       links: response ? JSON.parse(JSON.stringify(response.links)) : [],

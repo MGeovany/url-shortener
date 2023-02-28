@@ -27,11 +27,13 @@ export function CopyButton({
   return (
     <button
       onClick={handleCopyClick}
-      className={`flex mx-3 text-sm items-center justify-center hover:text-black`}
+      className={`flex mx-3 text-sm items-center justify-center hover:text-black w-full`}
       disabled={isCopied}
     >
       <Copy className="mx-2 h-5 w-5" />
-      {isCopied ? successText : buttonText}
+      <div className=" flex px-5 w-full">
+        {isCopied ? successText : buttonText}
+      </div>
     </button>
   );
 }

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 interface ShortLink {
   url: string;
@@ -78,11 +78,60 @@ export const getUserByEmail = async (email: string) => {
   return user;
 };
 
+export const getRecentUrls = async (email: string) => {
+  const prisma = new PrismaClient();
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+    include: {
+      links: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 5,
+      },
+    },
+  });
+  await prisma.$disconnect();
+  return user;
+};
+
+export const deleteLink = async (linkId: number) => {
+  const prisma = new PrismaClient();
+  try {
+    const link = await prisma.link.findUnique({
+      where: {
+        id: linkId,
+      },
+    });
+    if (!link) throw new Error("Link not found");
+
+    console.log("ima link", link);
+    await prisma.link.delete({
+      where: {
+        id: linkId,
+      },
+    });
+    await prisma.$disconnect();
+    return true;
+  } catch (err) {
+    console.error("error on delete", err);
+    return false;
+  }
+};
+
 export const createUser = async (email: string) => {
   const prisma = new PrismaClient();
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+
+  if (existingUser) {
+    // User already exists
+    return;
+  }
+
   await prisma.user.create({
     data: { email },
   });
   await prisma.$disconnect();
-  // return user;
 };

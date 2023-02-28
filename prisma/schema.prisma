@@ -19,7 +19,7 @@ model User {
 
 model Link {
   id        Int      @id @unique @default(autoincrement())
-  url       String   @unique
+  url       String
   shortUrl  String   @unique
   createdAt DateTime @default(now())
   userId    Int?
