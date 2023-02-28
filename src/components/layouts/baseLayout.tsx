@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { ReactNode } from "react";
+import { Navbar } from "../shared";
 import { Footer } from "./footer";
 
 interface BaseLayoutProps {
@@ -19,6 +20,7 @@ const BaseLayout = ({
         <title>{title}</title>
         <meta name="title" content={title} />
       </Head>
+      <Navbar />
       <main className="bg-[url('/bg/8.png')] md:bg-auto xs:bg-cover py-20">
         {children}
       </main>

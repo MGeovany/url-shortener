@@ -60,7 +60,6 @@ export default function Home({ links, userSession }: HomeProps) {
   };
   return (
     <>
-      <Navbar />
       <BaseLayout>
         <div className="h-screen flex flex-col justify-center items-center font-bold text-2xl">
           <picture>
