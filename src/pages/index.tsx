@@ -5,8 +5,12 @@ import BaseLayout from "@/components/layouts/baseLayout";
 import { getUserByEmail } from "lib/db";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
+import { RecentUrlsTable } from "@/components/shared/recentUrlsTable";
+import { Session } from "next-auth";
+import { useSignInModal } from "../components/layouts/signInModal";
 
 interface Shortener {
   shortUrl: string;
@@ -22,14 +26,19 @@ interface Link {
 
 interface HomeProps {
   links: Link[];
+  userSession: Session;
 }
 
-export default function Home({ links }: HomeProps) {
+export default function Home({ links, userSession }: HomeProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [shortUrl, setShortUrl] = useState<Shortener>({
     shortUrl: "",
     url: "",
   });
+
+  const { SignInModal, setShowSignInModal } = useSignInModal();
+
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,9 +54,9 @@ export default function Home({ links }: HomeProps) {
       .then((res) => {
         setShortUrl({ shortUrl: res.data.shortUrl, url: res.data.data });
         if (inputRef.current) inputRef.current.value = "";
+        router.push("/");
       });
   };
-  console.log(links);
   return (
     <>
       <Navbar />
@@ -92,46 +101,22 @@ export default function Home({ links }: HomeProps) {
               </button>
             </div>
           </form>
-          <div className="mt-10 text-center">
-            <span>Your recent URLs</span>
-            <table className="table-auto mt-5">
-              <thead className=" bg-slate-800">
-                <tr className="text-md">
-                  <th>domain</th>
-                  <th>url</th>
-                  <th>actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {links.map((link, index) => (
-                  <tr key={index} className="text-md">
-                    <td className="text-left">
-                      {getDomainNameFromUrl(link.url)}
-                    </td>
-                    <td>
-                      <div className="flex flex-row">
-                        <a
-                          className="text-blue-600 mx-3 justify-center items-center"
-                          href={link?.shortUrl}
-                          target="_blank"
-                        >
-                          {BASE_URL_PRODUCTION}
-                          {link.shortUrl}
-                        </a>
-                      </div>
-                    </td>
-                    <td>
-                      <CopyButton
-                        textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {userSession ? (
+            <RecentUrlsTable links={links} />
+          ) : (
+            <p className="mt-12 text-md">
+              <a
+                className="text-green-500 hover:underline hover:cursor-pointer"
+                onClick={() => setShowSignInModal(true)}
+              >
+                Sign In
+              </a>{" "}
+              to see all your URLs!
+            </p>
+          )}
         </div>
       </BaseLayout>
+      <SignInModal />
     </>
   );
 }
@@ -145,12 +130,11 @@ export const getServerSideProps = async (
   let response: any;
   console.log(email);
   if (email) response = await getUserByEmail(email);
-  console.log("IM_RESPONSE", response);
-
+  console.log("THIS_IS_REAL", session);
   return {
     props: {
       links: response ? JSON.parse(JSON.stringify(response.links)) : [],
-      session,
+      userSession: session,
     },
   };
 };

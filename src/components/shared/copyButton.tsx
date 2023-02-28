@@ -27,9 +27,7 @@ export function CopyButton({
   return (
     <button
       onClick={handleCopyClick}
-      className={`flex mx-3 text-sm items-center justify-center ${
-        isCopied ? "text-white" : "text-gray-300 hover:text-white"
-      }`}
+      className={`flex mx-3 text-sm items-center justify-center hover:text-black`}
       disabled={isCopied}
     >
       <Copy className="mx-2 h-5 w-5" />
