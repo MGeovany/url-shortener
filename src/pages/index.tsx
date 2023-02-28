@@ -53,6 +53,11 @@ export default function Home({ links, userSession }: HomeProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const url = inputRef.current?.value;
+    // Check if the URL is valid and not empty
+    if (!url || !/^https?:\/\/.+/.test(url)) {
+      console.log("Please enter a valid URL");
+      return;
+    }
     fetch("/api/shortUrl", {
       method: "POST",
       headers: {
