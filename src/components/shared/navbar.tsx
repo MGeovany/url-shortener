@@ -15,7 +15,7 @@ export function Navbar() {
   const { SignInModal, setShowSignInModal } = useSignInModal();
 
   return (
-    <div className="fixed w-full">
+    <div className="w-full">
       <div className={`fixed md:px-10 top-0 w-full z-30 transition-all`}>
         <div className="mx-5 flex h-16 max-w-screen-xl items-center md:justify-end xs:justify-end xl:mx-auto">
           <ul className="flex flex-row font-semibold">

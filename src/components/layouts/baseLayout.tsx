@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { ReactNode } from "react";
+import { Footer } from "./footer";
 
 interface BaseLayoutProps {
   children: ReactNode;
@@ -18,9 +19,10 @@ const BaseLayout = ({
         <title>{title}</title>
         <meta name="title" content={title} />
       </Head>
-      <main className="bg-[url('/bg/8.png')] md:bg-auto xs:bg-cover">
+      <main className="bg-[url('/bg/8.png')] md:bg-auto xs:bg-cover py-20">
         {children}
       </main>
+      <Footer />
     </>
   );
 };

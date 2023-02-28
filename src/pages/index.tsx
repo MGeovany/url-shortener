@@ -11,6 +11,7 @@ import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { RecentUrlsTable } from "@/components/shared/recentUrlsTable";
 import { Session } from "next-auth";
 import { useSignInModal } from "../components/layouts/signInModal";
+import { Footer } from "@/components/layouts/footer";
 
 interface Shortener {
   shortUrl: string;
