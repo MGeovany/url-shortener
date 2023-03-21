@@ -90,12 +90,12 @@ export function RecentUrlsTable({ links, email }: Props) {
         <div className="mt-10 flex flex-col items-center justify-center">
           <span>See More Links</span>
           <MoreHorizontal className="mb-5" />
-          <button
-            type="submit"
+          <a
+            href="/dashboard"
             className="xs:mt-5 xs:ml-0 justify-evenly md:mt-0 w-48 hover:bg-green-500 group flex items-center rounded-md bg-green-600 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
           >
             Go to my Dashboard
-          </button>
+          </a>
         </div>
       )}
     </div>
