@@ -97,6 +97,24 @@ export const getRecentUrls = async (email: string) => {
   return user;
 };
 
+export const getAllUrls = async (email: string) => {
+  const prisma = new PrismaClient();
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+    include: {
+      links: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
+  await prisma.$disconnect();
+  return user;
+};
+
 export const deleteLink = async (linkId: number) => {
   const prisma = new PrismaClient();
   try {
