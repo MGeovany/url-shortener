@@ -13,6 +13,7 @@ import { Session } from "next-auth";
 import { useSignInModal } from "../components/layouts/signInModal";
 import { Footer } from "@/components/layouts/footer";
 import { Plus } from "lucide-react";
+import { SignInButton } from "@/components/shared/signIn";
 
 interface Shortener {
   shortUrl: string;
@@ -110,15 +111,7 @@ export default function Home({ links, userSession }: HomeProps) {
           {userSession ? (
             <RecentUrlsTable links={links} email={userSession.user.email} />
           ) : (
-            <p className="mt-12 text-md">
-              <a
-                className="text-green-500 hover:underline hover:cursor-pointer"
-                onClick={() => setShowSignInModal(true)}
-              >
-                Sign In
-              </a>{" "}
-              to see all your URLs!
-            </p>
+            <SignInButton />
           )}
         </div>
       </BaseLayout>
