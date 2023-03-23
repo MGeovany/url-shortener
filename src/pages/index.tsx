@@ -76,7 +76,7 @@ export default function Home({ links, userSession }: HomeProps) {
   return (
     <>
       <BaseLayout>
-        <div className="h-screen flex flex-col justify-center items-center font-bold text-2xl">
+        <div className="md:h-screen flex flex-col justify-center items-center font-bold text-2xl">
           <picture>
             <img
               className="m-0 h-48 rounded-2xl object-cover w-full"
