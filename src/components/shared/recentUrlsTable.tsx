@@ -34,19 +34,19 @@ export function RecentUrlsTable({ links, email }: Props) {
   }
 
   return (
-    <div className="mt-10 text-center w-6/12 flex flex-col justify-center items-center">
+    <div className="mt-10 text-center md:w-6/12 xs:px-5 xs:w-full flex flex-col justify-center items-center">
       {links.length === 0 ? (
         <p>No short links yet ⭐️</p>
       ) : (
-        <table className="table-auto mt-5 text-sm text-left w-full">
+        <table className="table-auto mt-5 text-sm text-left md:w-full xs:w-fit">
           <thead className="text-xs uppercase text-white">
-            <tr className="text-md p-4">
+            <tr className="text-md md:p-4 xs:p-10">
               <th className="px-6 py-3">domain</th>
               <th className="px-6 py-3">url</th>
               <th className="px-6 py-3">actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="f xs:px-5">
             {links.map((link, index) => (
               <tr
                 key={index}

@@ -31,7 +31,7 @@ export function CopyButton({
       disabled={isCopied}
     >
       <Copy className="mx-2 h-5 w-5" />
-      <div className=" flex px-5 w-full">
+      <div className=" flex px-5 w-full xs:hidden md:block">
         {isCopied ? successText : buttonText}
       </div>
     </button>
