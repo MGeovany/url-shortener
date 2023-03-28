@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Link, PrismaClient } from "@prisma/client";
-import { useSession, getSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { createShortLink, getUserByEmail } from "lib/db";
-import { User } from "next-auth";
 
 type Data = {
   url?: string;
@@ -31,7 +29,7 @@ export default async function handler(
 
     const data = await createShortLink(url, shortUrl, userDB.id);
 
-    return res.status(200).json({ data });
+    return res.status(200).json(data);
   } catch (err: any) {
     console.log(err);
     return res.status(500).json({ error: err.message });

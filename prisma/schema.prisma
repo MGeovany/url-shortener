@@ -22,6 +22,7 @@ model Link {
   url       String
   shortUrl  String   @unique
   createdAt DateTime @default(now())
+  deleted   Boolean  @default(false)
   userId    Int?
   User      User?    @relation(fields: [userId], references: [id])
 }

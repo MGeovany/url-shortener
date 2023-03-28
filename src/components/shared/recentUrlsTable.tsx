@@ -2,7 +2,6 @@ import { BASE_URL_PRODUCTION } from "@/utils/constants";
 import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/router";
 
 interface Link {
   id: number;
@@ -13,29 +12,19 @@ interface Link {
 }
 
 interface Props {
-  links: Link[];
-  email: string;
+  linkData: Link[];
+  handleDeleteLink: (linkId: number) => Promise<void>;
 }
 
-export function RecentUrlsTable({ links, email }: Props) {
-  const router = useRouter();
-
-  async function handleDeleteLink(linkId: number) {
-    const response = await fetch(`/api/deleteLink?linkId=${linkId}`, {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      router.push("/");
-      console.log("deleted successfully", response);
-    } else {
-      // Handle error
-      console.log("error on the response", response);
-    }
-  }
+export function RecentUrlsTable({ linkData, handleDeleteLink }: Props) {
+  const visibleLinks = linkData.slice(0, 5); // get first 5 links
+  const lastVisibleLink = visibleLinks[visibleLinks.length - 1];
+  const blurredLastLink = { ...lastVisibleLink, blur: true }; // create a new object with blur property
+  visibleLinks[visibleLinks.length - 1] = blurredLastLink; // replace the last visible link with the blurred one
 
   return (
     <div className="mt-10 text-center md:w-6/12 xs:px-5 xs:w-full flex flex-col justify-center items-center">
-      {links.length === 0 ? (
+      {linkData.length === 0 ? (
         <p>No short links yet ⭐️</p>
       ) : (
         <table className="table-auto mt-5 text-sm text-left md:w-full xs:w-fit">
@@ -46,15 +35,13 @@ export function RecentUrlsTable({ links, email }: Props) {
               <th className="px-6 py-3">actions</th>
             </tr>
           </thead>
-          <tbody className="f xs:px-5">
-            {links.map((link, index) => (
+          <tbody className="xs:px-5">
+            {visibleLinks.map((link, index) => (
               <tr
                 key={index}
                 className={`${
-                  links.length >= 5 && index === links.length - 1
-                    ? "opacity-50 blur-sm"
-                    : ""
-                } border-b border-gray-700 bg-white-800  hover:bg-white hover:text-black`}
+                  index === 4 ? "opacity-50 blur-sm" : ""
+                } border-b border-gray-700 bg-white-800 hover:bg-white hover:text-black`}
               >
                 <td className="text-left p-4 py-5">
                   {getDomainNameFromUrl(link.url)}
@@ -86,7 +73,7 @@ export function RecentUrlsTable({ links, email }: Props) {
           </tbody>
         </table>
       )}
-      {links.length === 5 && (
+      {linkData.length === 5 && (
         <div className="mt-10 flex flex-col items-center justify-center">
           <span>See More Links</span>
           <MoreHorizontal className="mb-5" />

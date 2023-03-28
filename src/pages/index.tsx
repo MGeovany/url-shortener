@@ -1,24 +1,13 @@
-import React, { useRef, useState } from "react";
-import { Navbar, CopyButton } from "@/components/shared";
-import { BASE_URL, BASE_URL_PRODUCTION } from "@/utils/constants";
+import React, { useState } from "react";
 import BaseLayout from "@/components/layouts/baseLayout";
-import { getRecentUrls, getUserByEmail } from "lib/db";
+
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/router";
-
-import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { RecentUrlsTable } from "@/components/shared/recentUrlsTable";
-import { Session } from "next-auth";
-import { useSignInModal } from "../components/layouts/signInModal";
-import { Footer } from "@/components/layouts/footer";
 import { Plus } from "lucide-react";
 import { SignInButton } from "@/components/shared/signIn";
+import { getAllUrls } from "lib/db";
 
-interface Shortener {
-  shortUrl: string;
-  url: string;
-}
 interface Link {
   id: number;
   userId: number;
@@ -37,42 +26,55 @@ interface UserSession {
   user: User;
 }
 interface HomeProps {
-  links: Link[];
+  initialLinks: Link[];
   userSession: UserSession;
 }
 
-export default function Home({ links, userSession }: HomeProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [shortUrl, setShortUrl] = useState<Shortener>({
-    shortUrl: "",
-    url: "",
-  });
+export default function Home({ initialLinks, userSession }: HomeProps) {
+  const [url, setUrl] = useState<string>("");
+  const [linkData, setLinkData] = useState<Link[]>(initialLinks);
 
-  const { SignInModal, setShowSignInModal } = useSignInModal();
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+  };
 
-  const router = useRouter();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = inputRef.current?.value;
-    // Check if the URL is valid and not empty
+
     if (!url || !/^https?:\/\/.+/.test(url)) {
       console.log("Please enter a valid URL");
       return;
     }
-    fetch("/api/shortUrl", {
+
+    const response = await fetch("/api/shortUrl", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(url),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        // setShortUrl({ shortUrl: res.data.shortUrl, url: res.data.data });
-        if (inputRef.current) inputRef.current.value = "";
-        router.push("/");
-      });
+    });
+
+    if (!response.ok) {
+      console.log("Failed to create short link:", response.statusText);
+      return;
+    }
+
+    const newLink = await response.json();
+    setLinkData([newLink, ...linkData]);
+    setUrl("");
   };
+
+  async function handleDeleteLink(linkId: number) {
+    const response = await fetch(`/api/deleteLink?linkId=${linkId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      console.log("Failed to delete short link:", response.statusText);
+      return;
+    }
+    setLinkData(linkData.filter((link) => link.id !== linkId));
+  }
+
   return (
     <>
       <BaseLayout>
@@ -94,7 +96,8 @@ export default function Home({ links, userSession }: HomeProps) {
                 <input
                   type="text"
                   aria-label="Url"
-                  ref={inputRef}
+                  value={url}
+                  onChange={handleUrlChange}
                   placeholder="Enter an URL"
                   className="z-0 focus:ring-green-500 focus:outline-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-5 ring-1 ring-slate-200 shadow-sm"
                 />
@@ -109,13 +112,15 @@ export default function Home({ links, userSession }: HomeProps) {
             </div>
           </form>
           {userSession ? (
-            <RecentUrlsTable links={links} email={userSession.user.email} />
+            <RecentUrlsTable
+              linkData={linkData}
+              handleDeleteLink={handleDeleteLink}
+            />
           ) : (
             <SignInButton />
           )}
         </div>
       </BaseLayout>
-      <SignInModal />
     </>
   );
 }
@@ -127,10 +132,10 @@ export const getServerSideProps = async (
 
   const email = session?.user?.email;
   let response: any;
-  if (email) response = await getRecentUrls(email);
+  if (email) response = await getAllUrls(email);
   return {
     props: {
-      links: response ? JSON.parse(JSON.stringify(response.links)) : [],
+      initialLinks: response ? JSON.parse(JSON.stringify(response.links)) : [],
       userSession: session,
     },
   };

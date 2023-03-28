@@ -8,7 +8,6 @@ export default async function handler(
   if (req.method !== "DELETE") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
-
   const linkId = Number(req.query.linkId);
   try {
     await deleteLink(linkId);
