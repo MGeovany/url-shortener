@@ -1,19 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
-interface ShortLink {
-  url: string;
-  shortUrl: string;
-  userId: number;
-}
-
-interface LinkData {
-  id?: number;
-  url?: string;
-  shortUrl?: string;
-  createdAt?: Date;
-  userId?: number | null;
-  User?: number;
-}
 // Link handlers
 export const createShortLink = async (
   url: string,
@@ -86,6 +72,9 @@ export const getRecentUrls = async (email: string) => {
     },
     include: {
       links: {
+        where: {
+          deleted: false,
+        },
         orderBy: {
           createdAt: "desc",
         },
@@ -105,6 +94,9 @@ export const getAllUrls = async (email: string) => {
     },
     include: {
       links: {
+        where: {
+          deleted: false,
+        },
         orderBy: {
           createdAt: "desc",
         },
@@ -125,12 +117,15 @@ export const deleteLink = async (linkId: number) => {
     });
     if (!link) throw new Error("Link not found");
 
-    console.log("ima link", link);
-    await prisma.link.delete({
+    await prisma.link.update({
       where: {
         id: linkId,
       },
+      data: {
+        deleted: true,
+      },
     });
+
     await prisma.$disconnect();
     return true;
   } catch (err) {
@@ -144,7 +139,6 @@ export const createUser = async (email: string) => {
   const existingUser = await prisma.user.findUnique({ where: { email } });
 
   if (existingUser) {
-    // User already exists
     return;
   }
 
