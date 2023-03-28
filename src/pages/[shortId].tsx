@@ -1,11 +1,11 @@
 import React from "react";
 import { PrismaClient } from "@prisma/client";
 
-interface Props {
+interface ShortIdPageProps {
   shortId: string;
 }
 
-const ShortIdPage: React.FC<Props> = ({ shortId }) => {
+const ShortIdPage: React.FC<ShortIdPageProps> = ({ shortId }) => {
   return (
     <div>
       <p>shortIdPage</p>

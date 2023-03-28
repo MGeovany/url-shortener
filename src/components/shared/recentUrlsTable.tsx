@@ -3,20 +3,15 @@ import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
 
-interface Link {
-  id: number;
-  userId: number;
-  url: string;
-  shortUrl: string;
-  createdAt: string;
-}
-
-interface Props {
-  linkData: Link[];
+interface RecentUrlsTableProps {
+  linkData: LinkData[];
   handleDeleteLink: (linkId: number) => Promise<void>;
 }
 
-export function RecentUrlsTable({ linkData, handleDeleteLink }: Props) {
+export function RecentUrlsTable({
+  linkData,
+  handleDeleteLink,
+}: RecentUrlsTableProps) {
   const visibleLinks = linkData.slice(0, 5); // get first 5 links
   const lastVisibleLink = visibleLinks[visibleLinks.length - 1];
   const blurredLastLink = { ...lastVisibleLink, blur: true }; // create a new object with blur property
@@ -65,7 +60,7 @@ export function RecentUrlsTable({ linkData, handleDeleteLink }: Props) {
                   />
                   <X
                     className="mr-5 cursor-pointer"
-                    onClick={() => handleDeleteLink(link.id)}
+                    onClick={() => handleDeleteLink(link.id || 0)}
                   />
                 </td>
               </tr>

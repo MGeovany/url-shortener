@@ -4,20 +4,12 @@ import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/router";
 
-interface Link {
-  id: number;
-  userId: number;
-  url: string;
-  shortUrl: string;
-  createdAt: string;
-}
-
-interface Props {
-  links: Link[];
+interface UrlTableProps {
+  links: LinkData[];
   email: string;
 }
 
-export function UrlTable({ links, email }: Props) {
+export function UrlTable({ links, email }: UrlTableProps) {
   const router = useRouter();
 
   async function handleDeleteLink(linkId: number) {
@@ -28,7 +20,6 @@ export function UrlTable({ links, email }: Props) {
       router.push("/dashboard");
       console.log("deleted successfully", response);
     } else {
-      // Handle error
       console.log("error on the response", response);
     }
   }

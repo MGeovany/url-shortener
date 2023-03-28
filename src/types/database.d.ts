@@ -1,5 +1,5 @@
 interface LinkData {
-  id?: number;
+  id: number;
   url: string;
   shortUrl?: string;
   createdAt?: Date;
@@ -8,8 +8,5 @@ interface LinkData {
   User?: number;
 }
 
-interface ShortLink {
-  url: string;
-  shortUrl: string;
-  userId: number;
-}
+interface ShortLink
+  extends Pick<LinkData, "id" | "url" | "shortUrl" | "userId"> {}

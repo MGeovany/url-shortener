@@ -5,29 +5,8 @@ import { getSession, useSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import { getAllUrls } from "lib/db";
 
-interface Shortener {
-  shortUrl: string;
-  url: string;
-}
-interface Link {
-  id: number;
-  userId: number;
-  url: string;
-  shortUrl: string;
-  createdAt: string;
-}
-
-interface User {
-  email: string;
-  image: string;
-  name: string;
-}
-interface UserSession {
-  expires: string;
-  user: User;
-}
 interface DashboardProps {
-  links: Link[];
+  links: LinkData[];
   userSession: UserSession;
 }
 export default function Dashboard({ links, userSession }: DashboardProps) {

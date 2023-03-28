@@ -8,31 +8,14 @@ import { Plus } from "lucide-react";
 import { SignInButton } from "@/components/shared/signIn";
 import { getAllUrls } from "lib/db";
 
-interface Link {
-  id: number;
-  userId: number;
-  url: string;
-  shortUrl: string;
-  createdAt: string;
-}
-
-interface User {
-  email: string;
-  image: string;
-  name: string;
-}
-interface UserSession {
-  expires: string;
-  user: User;
-}
 interface HomeProps {
-  initialLinks: Link[];
+  initialLinks: LinkData[];
   userSession: UserSession;
 }
 
 export default function Home({ initialLinks, userSession }: HomeProps) {
   const [url, setUrl] = useState<string>("");
-  const [linkData, setLinkData] = useState<Link[]>(initialLinks);
+  const [linkData, setLinkData] = useState<LinkData[]>(initialLinks);
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
