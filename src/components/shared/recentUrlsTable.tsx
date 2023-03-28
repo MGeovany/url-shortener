@@ -73,7 +73,7 @@ export function RecentUrlsTable({ linkData, handleDeleteLink }: Props) {
           </tbody>
         </table>
       )}
-      {linkData.length === 5 && (
+      {linkData.length >= 5 && (
         <div className="mt-10 flex flex-col items-center justify-center">
           <span>See More Links</span>
           <MoreHorizontal className="mb-5" />
