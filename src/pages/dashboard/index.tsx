@@ -4,6 +4,7 @@ import { UrlTable } from "@/components/shared/urlTable";
 import { getSession, useSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import { getAllUrls } from "lib/db";
+import { useState } from "react";
 
 interface DashboardProps {
   links: LinkData[];
@@ -11,6 +12,18 @@ interface DashboardProps {
 }
 export default function Dashboard({ links, userSession }: DashboardProps) {
   const { data: session, status } = useSession();
+  const [linkData, setLinkData] = useState<LinkData[]>(links);
+
+  async function handleDeleteLink(linkId: number) {
+    const response = await fetch(`/api/deleteLink?linkId=${linkId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      console.log("Failed to delete short link:", response.statusText);
+      return;
+    }
+    setLinkData(linkData.filter((link) => link.id !== linkId));
+  }
 
   return (
     <>
@@ -27,7 +40,10 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
                 </div>
                 <div className="flex">
                   {userSession ? (
-                    <UrlTable links={links} email={userSession.user.email} />
+                    <UrlTable
+                      links={linkData}
+                      handleDeleteLink={handleDeleteLink}
+                    />
                   ) : (
                     <SignInButton />
                   )}

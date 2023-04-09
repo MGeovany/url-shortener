@@ -1,28 +1,22 @@
-import { BASE_URL_PRODUCTION } from "@/utils/constants";
+import { PAGINATION_SIZE } from "@/utils/constants";
 import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/router";
+import { useState } from "react";
+import { Pagination } from "@mantine/core";
 
 interface UrlTableProps {
   links: LinkData[];
-  email: string;
+  handleDeleteLink: (linkId: number) => Promise<void>;
 }
 
-export function UrlTable({ links, email }: UrlTableProps) {
-  const router = useRouter();
+export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
+  const [activePage, setActivePage] = useState<number>(1);
 
-  async function handleDeleteLink(linkId: number) {
-    const response = await fetch(`/api/deleteLink?linkId=${linkId}`, {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      router.push("/dashboard");
-      console.log("deleted successfully", response);
-    } else {
-      console.log("error on the response", response);
-    }
-  }
+  const totalPages = Math.ceil(links.length / PAGINATION_SIZE);
+  const startIndex = (activePage - 1) * PAGINATION_SIZE;
+  const endIndex = startIndex + PAGINATION_SIZE;
+  const linksToShow = links.slice(startIndex, endIndex);
 
   return (
     <div className="mt-10 text-center w-full flex flex-col justify-center items-center">
@@ -38,7 +32,7 @@ export function UrlTable({ links, email }: UrlTableProps) {
             </tr>
           </thead>
           <tbody>
-            {links.map((link, index) => (
+            {linksToShow.map((link, index) => (
               <tr
                 key={index}
                 className={
@@ -56,14 +50,14 @@ export function UrlTable({ links, email }: UrlTableProps) {
                       target="_blank"
                       aria-disabled
                     >
-                      {BASE_URL_PRODUCTION}
+                      {PAGINATION_SIZE}
                       {link.shortUrl}
                     </a>
                   </div>
                 </td>
                 <td className="flex flex-row justify-between h-full mt-4">
                   <CopyButton
-                    textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
+                    textToCopy={`${PAGINATION_SIZE}${link.shortUrl}`}
                   />
                   <X
                     className="mr-5 cursor-pointer"
@@ -77,16 +71,33 @@ export function UrlTable({ links, email }: UrlTableProps) {
       )}
       {links.length > 4 && (
         <div className="mt-10 flex flex-col items-center justify-center">
-          <span>PAGINATION</span>
           <MoreHorizontal className="mb-5" />
-          <a
-            href="/"
-            className="xs:mt-5 xs:ml-0 justify-evenly md:mt-0 w-48 hover:bg-green-500 group flex items-center rounded-md bg-green-600 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
-          >
-            Go to cut URLs
-          </a>
+          <Pagination
+            total={totalPages}
+            onChange={setActivePage}
+            color="teal"
+            styles={(theme) => ({
+              control: {
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "white",
+                  color: theme.colors.dark,
+                },
+                "&[data-active]": {
+                  backgroundColor: theme.colors.teal[7],
+                  color: "white",
+                },
+              },
+            })}
+          />
         </div>
       )}
+      <a
+        href="/"
+        className="xs:mt-5 xs:ml-0 justify-evenly md:mt-5 w-48 hover:bg-green-500 group flex items-center rounded-md bg-green-600 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
+      >
+        Go to cut URLs
+      </a>
     </div>
   );
 }
