@@ -2,6 +2,7 @@ import { BASE_URL_PRODUCTION } from "@/utils/constants";
 import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
+import { Tooltip } from "@mantine/core";
 
 interface RecentUrlsTableProps {
   linkData: LinkData[];
@@ -27,7 +28,7 @@ export function RecentUrlsTable({
             <tr className="text-md md:p-4 xs:p-10">
               <th className="px-6 py-3">domain</th>
               <th className="px-6 py-3">url</th>
-              <th className="px-6 py-3">actions</th>
+              <th className="px-6 py-3 text-center">actions</th>
             </tr>
           </thead>
           <tbody className="xs:px-5">
@@ -54,14 +55,22 @@ export function RecentUrlsTable({
                     </a>
                   </div>
                 </td>
-                <td className="flex flex-row justify-between h-full mt-4">
-                  <CopyButton
-                    textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
-                  />
-                  <X
-                    className="mr-5 cursor-pointer"
-                    onClick={() => handleDeleteLink(link.id || 0)}
-                  />
+                <td>
+                  <div className="flex flex-row justify-between">
+                    <div className="w-1/3 h-full cursor-pointer">
+                      <CopyButton
+                        textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
+                      />
+                    </div>
+                    <div className="w-1/3 h-full flex justify-center cursor-pointer">
+                      <Tooltip label="Delete" withArrow position="right">
+                        <X
+                          className="w-full"
+                          onClick={() => handleDeleteLink(link.id || 0)}
+                        />
+                      </Tooltip>
+                    </div>
+                  </div>
                 </td>
               </tr>
             ))}

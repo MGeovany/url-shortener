@@ -1,39 +1,24 @@
-import { useState } from "react";
-import { Copy } from "lucide-react";
+import { Copy, CheckCheck } from "lucide-react";
+import {
+  CopyButton as CopyButtonMantine,
+  ActionIcon,
+  Tooltip,
+} from "@mantine/core";
 
 type CopyButtonProps = {
   textToCopy: string;
-  buttonText?: string;
-  successText?: string;
 };
 
-export function CopyButton({
-  textToCopy,
-  buttonText = "Copy",
-  successText = "Copied!",
-}: CopyButtonProps) {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopyClick = async () => {
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
-    }
-  };
-
+export function CopyButton({ textToCopy }: CopyButtonProps) {
   return (
-    <button
-      onClick={handleCopyClick}
-      className={`flex mx-3 text-sm items-center justify-center hover:text-black w-full`}
-      disabled={isCopied}
-    >
-      <Copy className="mx-2 h-5 w-5" />
-      <div className=" flex px-5 w-full xs:hidden md:block">
-        {isCopied ? successText : buttonText}
-      </div>
-    </button>
+    <CopyButtonMantine value={textToCopy} timeout={2000}>
+      {({ copied, copy }) => (
+        <Tooltip label={copied ? "Copied" : "Copy"} withArrow position="right">
+          <div className="w-full h-full flex justify-center" onClick={copy}>
+            {copied ? <CheckCheck /> : <Copy />}
+          </div>
+        </Tooltip>
+      )}
+    </CopyButtonMantine>
   );
 }

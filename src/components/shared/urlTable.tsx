@@ -1,9 +1,9 @@
-import { PAGINATION_SIZE } from "@/utils/constants";
+import { BASE_URL_PRODUCTION, PAGINATION_SIZE } from "@/utils/constants";
 import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
-import { Pagination } from "@mantine/core";
+import { Pagination, Tooltip } from "@mantine/core";
 
 interface UrlTableProps {
   links: LinkData[];
@@ -28,7 +28,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
             <tr className="text-md p-4">
               <th className="px-6 py-3">domain</th>
               <th className="px-6 py-3">url</th>
-              <th className="px-6 py-3">actions</th>
+              <th className="px-6 py-3 text-center">actions</th>
             </tr>
           </thead>
           <tbody>
@@ -50,19 +50,27 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                       target="_blank"
                       aria-disabled
                     >
-                      {PAGINATION_SIZE}
+                      {BASE_URL_PRODUCTION}
                       {link.shortUrl}
                     </a>
                   </div>
                 </td>
-                <td className="flex flex-row justify-between h-full mt-4">
-                  <CopyButton
-                    textToCopy={`${PAGINATION_SIZE}${link.shortUrl}`}
-                  />
-                  <X
-                    className="mr-5 cursor-pointer"
-                    onClick={() => handleDeleteLink(link.id)}
-                  />
+                <td>
+                  <div className="flex flex-row justify-between">
+                    <div className="w-1/3 h-full cursor-pointer">
+                      <CopyButton
+                        textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
+                      />
+                    </div>
+                    <div className="w-1/3 h-full flex justify-center cursor-pointer">
+                      <Tooltip label="Delete" withArrow position="right">
+                        <X
+                          className="w-full"
+                          onClick={() => handleDeleteLink(link.id || 0)}
+                        />
+                      </Tooltip>
+                    </div>
+                  </div>
                 </td>
               </tr>
             ))}
