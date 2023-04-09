@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 // Link handlers
 export const createShortLink = async (
@@ -9,7 +9,7 @@ export const createShortLink = async (
   const prisma = new PrismaClient();
 
   const linkData = await prisma.link.create({
-    data: { url, shortUrl, userId } as ShortLink,
+    data: { url, shortUrl, userId },
   });
 
   await prisma.user.update({
@@ -20,6 +20,23 @@ export const createShortLink = async (
           id: linkData.id,
         },
       },
+    },
+  });
+
+  await prisma.$disconnect();
+  return linkData;
+};
+
+export const createTemporaryLink = async (
+  url: string,
+  shortUrl: string
+): Promise<LinkData> => {
+  const prisma = new PrismaClient();
+
+  const linkData = await prisma.temporaryLink.create({
+    data: {
+      url,
+      shortUrl,
     },
   });
 

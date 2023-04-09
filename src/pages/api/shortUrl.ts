@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { createShortLink, getUserByEmail } from "lib/db";
+import { createShortLink, createTemporaryLink, getUserByEmail } from "lib/db";
 
 type Data = {
   url?: string;
@@ -14,12 +14,13 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const session = await getSession({ req });
-  if (!session) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
   const url = req.body;
   const shortUrl = Math.random().toString(36).substring(2, 7);
+
+  if (!session) {
+    const data = await createTemporaryLink(url, shortUrl);
+    return res.status(202).json(data);
+  }
 
   try {
     const email = session?.user?.email;

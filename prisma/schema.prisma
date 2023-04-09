@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -25,4 +22,11 @@ model Link {
   deleted   Boolean  @default(false)
   userId    Int?
   User      User?    @relation(fields: [userId], references: [id])
+}
+
+model TemporaryLink {
+  id        Int      @id @unique @default(autoincrement())
+  url       String
+  shortUrl  String   @unique
+  createdAt DateTime @default(now())
 }
