@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@mantine/core": "^6.0.5",
+    "@mantine/hooks": "^6.0.5",
     "@next/font": "13.1.6",
     "@prisma/client": "^4.10.1",
     "@radix-ui/react-popover": "^1.0.4",
