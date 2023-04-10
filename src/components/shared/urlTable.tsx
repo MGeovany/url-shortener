@@ -4,6 +4,7 @@ import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { Pagination, Tooltip } from "@mantine/core";
+import { LINKS_PER_PAGE } from "@/utils/tableConfig";
 
 interface UrlTableProps {
   links: LinkData[];
@@ -14,9 +15,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
   const [activePage, setActivePage] = useState<number>(1);
 
   const totalPages = Math.ceil(links.length / PAGINATION_SIZE);
-  const startIndex = (activePage - 1) * PAGINATION_SIZE;
-  const endIndex = startIndex + PAGINATION_SIZE;
-  const linksToShow = links.slice(startIndex, endIndex);
+  const linksToShow = LINKS_PER_PAGE(links, activePage);
 
   return (
     <div className="mt-10 text-center w-full flex flex-col justify-center items-center">
