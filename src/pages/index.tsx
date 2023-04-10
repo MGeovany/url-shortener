@@ -10,13 +10,10 @@ import { getAllUrls } from "lib/db";
 import { useClipboard } from "@mantine/hooks";
 import { BASE_URL_PRODUCTION } from "@/utils/constants";
 import { Toaster, toast } from "react-hot-toast";
-import {
-  FAILED_TO_DELETE_TOAST,
-  GENERAL_ERROR_TOAST,
-  INVALID_URL_TOAST,
-  LINK_DELETED_TOAST,
-} from "../notifications";
+import { INVALID_URL_TOAST, LINK_DELETED_TOAST } from "../notifications";
 import { createShortLink, deleteLink } from "@/api";
+import { X } from "lucide-react";
+
 interface HomeProps {
   initialLinks: LinkData[];
   userSession: UserSession;
@@ -96,15 +93,24 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
           <p className="mb-10">URL Shortener 🔗</p>
           <form onSubmit={handleSubmit}>
             <div className="flex md:flex-row sm:flex-col xs:flex-col">
-              <div className="w-72">
+              <div className="w-72 relative">
                 <input
                   type="text"
                   aria-label="Url"
                   value={url}
                   onChange={handleUrlChange}
                   placeholder="Enter an URL"
-                  className="z-0 focus:ring-green-500 focus:outline-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-5 ring-1 ring-slate-200 shadow-sm"
+                  className="relative z-0 focus:ring-green-500 focus:outline-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-5 ring-1 ring-slate-200 shadow-sm"
                 />
+                {url.length > 0 && (
+                  <button
+                    type="button"
+                    className="absolute top-0 right-0 h-full px-2 hover:text-white text-gray-500 focus:outline-none"
+                    onClick={() => setUrl("")}
+                  >
+                    <X />
+                  </button>
+                )}
               </div>
               {labelNewURL ? (
                 <Tooltip label={labelNewURL} position="bottom">
