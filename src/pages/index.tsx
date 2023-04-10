@@ -62,11 +62,11 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
           return "Short link created!";
         },
         error: (err) => {
-          return `Failed to create short link. ${err}`;
+          return `${err}`;
         },
       });
     } catch (err) {
-      GENERAL_ERROR_TOAST(err);
+      console.log(err);
       return;
     }
   };

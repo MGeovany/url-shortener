@@ -32,7 +32,7 @@ export default async function handler(
 
     return res.status(200).json(data);
   } catch (err: any) {
-    console.log(err);
+    console.log(err.message);
     return res.status(500).json({ error: err.message });
   }
 }

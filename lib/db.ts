@@ -8,6 +8,17 @@ export const createShortLink = async (
 ): Promise<LinkData> => {
   const prisma = new PrismaClient();
 
+  const existingLink = await prisma.link.findFirst({
+    where: {
+      url,
+      userId,
+    },
+  });
+
+  if (existingLink) {
+    throw new Error("Link already exists for this user");
+  }
+
   const linkData = await prisma.link.create({
     data: { url, shortUrl, userId },
   });

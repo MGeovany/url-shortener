@@ -21,7 +21,8 @@ export async function createShortLink(url: string) {
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to create short link: ${response.statusText}`);
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.error);
   }
 
   return response.json();
