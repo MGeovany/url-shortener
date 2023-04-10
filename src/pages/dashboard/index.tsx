@@ -5,8 +5,9 @@ import { getSession, useSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import { getAllUrls } from "lib/db";
 import { useState } from "react";
-import { FAILED_TO_DELETE_TOAST, LINK_DELETED_TOAST } from "@/notifications";
+import { LINK_DELETED_TOAST } from "@/notifications";
 import { Toaster } from "react-hot-toast";
+import { deleteLink } from "@/api";
 
 interface DashboardProps {
   links: LinkData[];
@@ -17,17 +18,12 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
   const [linkData, setLinkData] = useState<LinkData[]>(links);
 
   async function handleDeleteLink(linkId: number) {
-    const response = await fetch(`/api/deleteLink?linkId=${linkId}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) {
-      FAILED_TO_DELETE_TOAST(response.statusText);
-      return;
+    const success = await deleteLink(linkId);
+    if (success) {
+      setLinkData(linkData.filter((link) => link.id !== linkId));
+      LINK_DELETED_TOAST();
     }
-    setLinkData(linkData.filter((link) => link.id !== linkId));
-    LINK_DELETED_TOAST();
   }
-
   return (
     <>
       <BaseLayout>

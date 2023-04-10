@@ -16,6 +16,7 @@ import {
   INVALID_URL_TOAST,
   LINK_DELETED_TOAST,
 } from "../notifications";
+import { createShortLink, deleteLink } from "@/api";
 interface HomeProps {
   initialLinks: LinkData[];
   userSession: UserSession;
@@ -52,35 +53,18 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
       return;
     }
     try {
-      await toast.promise(
-        fetch("/api/shortUrl", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(url),
-        }).then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              `Failed to create short link: ${response.statusText}`
-            );
-          }
-          return response.json();
-        }),
-
-        {
-          loading: "Creating short link...",
-          success: (data) => {
-            temporaryLink.current = data.shortUrl;
-            setLinkData([data, ...linkData]);
-            handleCopiedURL();
-            return "Short link created!";
-          },
-          error: (err) => {
-            return `Failed to create short link. ${err}`;
-          },
-        }
-      );
+      await toast.promise(createShortLink(url), {
+        loading: "Creating short link...",
+        success: (data) => {
+          temporaryLink.current = data.shortUrl;
+          setLinkData([data, ...linkData]);
+          handleCopiedURL();
+          return "Short link created!";
+        },
+        error: (err) => {
+          return `Failed to create short link. ${err}`;
+        },
+      });
     } catch (err) {
       GENERAL_ERROR_TOAST(err);
       return;
@@ -88,15 +72,11 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
   };
 
   async function handleDeleteLink(linkId: number) {
-    const response = await fetch(`/api/deleteLink?linkId=${linkId}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) {
-      FAILED_TO_DELETE_TOAST(response.statusText);
-      return;
+    const success = await deleteLink(linkId);
+    if (success) {
+      setLinkData(linkData.filter((link) => link.id !== linkId));
+      LINK_DELETED_TOAST();
     }
-    setLinkData(linkData.filter((link) => link.id !== linkId));
-    LINK_DELETED_TOAST();
   }
 
   return (
