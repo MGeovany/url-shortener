@@ -11,7 +11,7 @@ export function CopyButton({ textToCopy }: CopyButtonProps) {
       {({ copied, copy }) => (
         <Tooltip label={copied ? "Copied" : "Copy"} withArrow position="right">
           <div className="w-full h-full flex justify-center" onClick={copy}>
-            {copied ? <CheckCheck /> : <Copy />}
+            {copied ? <CheckCheck size={"20px"} /> : <Copy size={"20px"} />}
           </div>
         </Tooltip>
       )}

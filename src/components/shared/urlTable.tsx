@@ -55,7 +55,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                   </div>
                 </td>
                 <td>
-                  <div className="flex flex-row justify-between">
+                  <div className="flex flex-row justify-between px-4">
                     <div className="w-1/3 h-full cursor-pointer">
                       <CopyButton
                         textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
@@ -65,6 +65,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                       <Tooltip label="Delete" withArrow position="right">
                         <X
                           className="w-full"
+                          size={"20px"}
                           onClick={() => handleDeleteLink(link.id || 0)}
                         />
                       </Tooltip>

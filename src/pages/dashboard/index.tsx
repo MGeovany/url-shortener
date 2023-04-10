@@ -27,7 +27,7 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
   return (
     <>
       <BaseLayout>
-        <div className="md:h-screen flex flex-col font-bold text-xl md:p-10 w-full items-center">
+        <div className="h-screen flex flex-col font-bold text-xl md:p-10 w-full items-center">
           <div className="md:w-3/5 xs:w-full">
             {!session && status !== "loading" ? (
               <SignInButton />

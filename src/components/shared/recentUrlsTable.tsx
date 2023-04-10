@@ -53,7 +53,7 @@ export function RecentUrlsTable({
                   </div>
                 </td>
                 <td className={`${index === 4 && "pointer-events-none"}`}>
-                  <div className="flex flex-row justify-between">
+                  <div className="flex flex-row justify-between px-2">
                     <div className="w-1/3 h-full cursor-pointer">
                       <CopyButton
                         textToCopy={`${BASE_URL_PRODUCTION}${link.shortUrl}`}
@@ -62,6 +62,7 @@ export function RecentUrlsTable({
                     <div className="w-1/3 h-full flex justify-center cursor-pointer">
                       <Tooltip label="Delete" withArrow position="right">
                         <X
+                          size={"20px"}
                           className="w-full"
                           onClick={() => handleDeleteLink(link.id || 0)}
                         />
