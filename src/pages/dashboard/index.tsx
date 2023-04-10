@@ -5,6 +5,8 @@ import { getSession, useSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import { getAllUrls } from "lib/db";
 import { useState } from "react";
+import { FAILED_TO_DELETE_TOAST, LINK_DELETED_TOAST } from "@/notifications";
+import { Toaster } from "react-hot-toast";
 
 interface DashboardProps {
   links: LinkData[];
@@ -19,10 +21,11 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
       method: "DELETE",
     });
     if (!response.ok) {
-      console.log("Failed to delete short link:", response.statusText);
+      FAILED_TO_DELETE_TOAST(response.statusText);
       return;
     }
     setLinkData(linkData.filter((link) => link.id !== linkId));
+    LINK_DELETED_TOAST();
   }
 
   return (
@@ -52,6 +55,7 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
             )}
           </div>
         </div>
+        <Toaster position="top-center" reverseOrder={false} gutter={8} />
       </BaseLayout>
     </>
   );

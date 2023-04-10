@@ -9,7 +9,13 @@ import { SignInButton } from "@/components/shared/signIn";
 import { getAllUrls } from "lib/db";
 import { useClipboard } from "@mantine/hooks";
 import { BASE_URL_PRODUCTION } from "@/utils/constants";
-
+import { Toaster, toast } from "react-hot-toast";
+import {
+  FAILED_TO_DELETE_TOAST,
+  GENERAL_ERROR_TOAST,
+  INVALID_URL_TOAST,
+  LINK_DELETED_TOAST,
+} from "../notifications";
 interface HomeProps {
   initialLinks: LinkData[];
   userSession: UserSession;
@@ -27,6 +33,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
     const shorter = BASE_URL_PRODUCTION + temporaryLink.current;
     clipboard.copy(shorter);
     setLabelNewURL("Link Copied!");
+
     setUrl("");
     setTimeout(() => {
       setLabelNewURL(undefined);
@@ -41,36 +48,41 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
     e.preventDefault();
 
     if (!url || !/^https?:\/\/.+/.test(url)) {
-      console.log("Please enter a valid URL");
+      INVALID_URL_TOAST();
       return;
     }
     try {
-      const response = await fetch("/api/shortUrl", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(url),
-      });
+      await toast.promise(
+        fetch("/api/shortUrl", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(url),
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `Failed to create short link: ${response.statusText}`
+            );
+          }
+          return response.json();
+        }),
 
-      if (!response.ok) {
-        console.log("Failed to create short link:", response.statusText);
-        return;
-      }
-
-      const data = await response.json();
-
-      // 202 link created but it's temporary
-      if (response.status === 202) {
-        temporaryLink.current = data.shortUrl;
-        handleCopiedURL();
-        return;
-      }
-
-      setLinkData([data, ...linkData]);
-      handleCopiedURL();
+        {
+          loading: "Creating short link...",
+          success: (data) => {
+            temporaryLink.current = data.shortUrl;
+            setLinkData([data, ...linkData]);
+            handleCopiedURL();
+            return "Short link created!";
+          },
+          error: (err) => {
+            return `Failed to create short link. ${err}`;
+          },
+        }
+      );
     } catch (err) {
-      console.log(err);
+      GENERAL_ERROR_TOAST(err);
       return;
     }
   };
@@ -80,10 +92,11 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
       method: "DELETE",
     });
     if (!response.ok) {
-      console.log("Failed to delete short link:", response.statusText);
+      FAILED_TO_DELETE_TOAST(response.statusText);
       return;
     }
     setLinkData(linkData.filter((link) => link.id !== linkId));
+    LINK_DELETED_TOAST();
   }
 
   return (
@@ -141,6 +154,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
           )}
         </div>
       </BaseLayout>
+      <Toaster position="top-center" reverseOrder={false} gutter={8} />
     </>
   );
 }
