@@ -3,6 +3,7 @@ import getDomainNameFromUrl from "@/utils/mainNameFromUrl";
 import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
 import { Tooltip } from "@mantine/core";
+import { VISIBLE_LINKS } from "@/utils/tableConfig";
 
 interface RecentUrlsTableProps {
   linkData: LinkData[];
@@ -13,10 +14,7 @@ export function RecentUrlsTable({
   linkData,
   handleDeleteLink,
 }: RecentUrlsTableProps) {
-  const visibleLinks = linkData.slice(0, 5); // get first 5 links
-  const lastVisibleLink = visibleLinks[visibleLinks.length - 1];
-  const blurredLastLink = { ...lastVisibleLink, blur: true }; // create a new object with blur property
-  visibleLinks[visibleLinks.length - 1] = blurredLastLink; // replace the last visible link with the blurred one
+  const visibleLinks = VISIBLE_LINKS(linkData);
 
   return (
     <div className="mt-10 text-center md:w-6/12 xs:px-5 xs:w-full flex flex-col justify-center items-center">
@@ -42,20 +40,19 @@ export function RecentUrlsTable({
                 <td className="text-left p-4 py-5">
                   {getDomainNameFromUrl(link.url)}
                 </td>
-                <td>
+                <td className={`${index === 4 && "pointer-events-none"}`}>
                   <div className="flex flex-row">
                     <a
                       className="text-green-500 mx-3 justify-center items-center"
                       href={link?.shortUrl}
                       target="_blank"
-                      aria-disabled
                     >
                       {BASE_URL_PRODUCTION}
                       {link.shortUrl}
                     </a>
                   </div>
                 </td>
-                <td>
+                <td className={`${index === 4 && "pointer-events-none"}`}>
                   <div className="flex flex-row justify-between">
                     <div className="w-1/3 h-full cursor-pointer">
                       <CopyButton

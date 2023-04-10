@@ -1,9 +1,5 @@
 import { Copy, CheckCheck } from "lucide-react";
-import {
-  CopyButton as CopyButtonMantine,
-  ActionIcon,
-  Tooltip,
-} from "@mantine/core";
+import { CopyButton as CopyButtonMantine, Tooltip } from "@mantine/core";
 
 type CopyButtonProps = {
   textToCopy: string;

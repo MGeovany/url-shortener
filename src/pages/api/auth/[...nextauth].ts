@@ -21,25 +21,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-
-  /*
-    async session({
-      session,
-      user,
-    }: {
-      session: Session;
-      user: User | undefined;
-    }): Promise<Session> {
-      try {
-        const email = user?.email;
-        if (email) await createUser(email);
-      } catch (error) {
-        console.error("error from nextAuth on creating user", error);
-      }
-
-      return session;
-    },
-  */
 };
 
 export default NextAuth(authOptions);
