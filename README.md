@@ -13,7 +13,7 @@
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development
 - [Framer Motion](https://framer.com/motion) – Motion library for React to animate components with ease
 - [Lucide](https://lucide.dev/) – Beautifully simple, pixel-perfect icons
-- [Mantine}(https://mantine.dev) - A fully featured React component library
+- [Mantine](https://mantine.dev) - A fully featured React component library
 
 #### Code Quality
 
