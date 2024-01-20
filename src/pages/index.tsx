@@ -38,7 +38,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
     }, 2000);
   };
 
-  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUrlChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUrl(e.target.value);
   };
 
@@ -92,15 +92,16 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
           </h1>
           <p className="mb-10">URL Shortener 🔗</p>
           <form onSubmit={handleSubmit}>
-            <div className="flex md:flex-row sm:flex-col xs:flex-col">
+            <div className="flex md:flex-row sm:flex-col xs:flex-col md:items-center">
               <div className="w-72 relative">
-                <input
-                  type="text"
+                <textarea
+                  rows={3}
+                  cols={400}
                   aria-label="Url"
                   value={url}
                   onChange={handleUrlChange}
                   placeholder="Enter an URL"
-                  className="relative z-0 focus:ring-green-500 focus:outline-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-5 ring-1 ring-slate-200 shadow-sm"
+                  className="relative z-0 focus:ring-green-500 focus:outline-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-5 ring-1 ring-slate-200 shadow-sm pr-10"
                 />
                 {url.length > 0 && (
                   <button
@@ -114,7 +115,10 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
               </div>
               {labelNewURL ? (
                 <Tooltip label={labelNewURL} position="bottom">
-                  <button className="w-32 xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-00 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm">
+                  <button
+                    type="submit"
+                    className="h-fit xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-00 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
+                  >
                     <Plus />
                     New URL
                   </button>
@@ -122,7 +126,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
               ) : (
                 <button
                   type="submit"
-                  className="w-32 xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-00 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
+                  className="w-32 h-fit xs:mt-5 xs:ml-0 justify-evenly md:mt-0 md:ml-5 hover:bg-green-00 group flex items-center rounded-md bg-green-500 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
                 >
                   <Plus />
                   New URL
