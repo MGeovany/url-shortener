@@ -41,9 +41,9 @@ export function RecentUrlsTable({
                   {getDomainNameFromUrl(link.url)}
                 </td>
                 <td className={`${index === 4 && "pointer-events-none"}`}>
-                  <div className="flex flex-row">
+                  <div className="flex flex-row sm:w-full xs:w-40">
                     <a
-                      className="text-green-500 mx-3 justify-center items-center"
+                      className="text-green-500 mx-3 justify-center items-center overflow-hidden whitespace-nowrap inline-block"
                       href={link?.shortUrl}
                       target="_blank"
                     >
