@@ -42,9 +42,9 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                   {getDomainNameFromUrl(link.url)}
                 </td>
                 <td>
-                  <div className="flex flex-row">
+                  <div className="flex flex-row sm:w-full xs:w-40">
                     <a
-                      className="text-green-500 mx-3 justify-center items-center"
+                      className="text-green-500 mx-3 justify-center items-center overflow-hidden whitespace-nowrap inline-block"
                       href={link?.shortUrl}
                       target="_blank"
                       aria-disabled
@@ -92,7 +92,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                   color: theme.colors.dark,
                 },
                 "&[data-active]": {
-                  backgroundColor: theme.colors.teal[7],
+                  backgroundColor: theme.colors.teal[5],
                   color: "white",
                 },
               },

@@ -79,7 +79,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
   return (
     <>
       <BaseLayout>
-        <div className="md:h-screen flex flex-col justify-center items-center font-bold text-2xl">
+        <div className="flex flex-col justify-center items-center font-bold text-2xl">
           <picture>
             <img
               className="m-0 h-48 rounded-2xl object-cover w-full"
@@ -90,7 +90,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
           <h1 className="md:text-9xl xs:text-7xl">
             zoro.<span className="text text-green-400">cut</span>
           </h1>
-          <p className="mb-10">URL Shortener 🔗</p>
+          <p className="mb-10">URL Shortener</p>
           <form onSubmit={handleSubmit}>
             <div className="flex md:flex-row sm:flex-col xs:flex-col md:items-center">
               <div className="w-72 relative">
@@ -100,7 +100,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
                   aria-label="Url"
                   value={url}
                   onChange={handleUrlChange}
-                  placeholder="Enter an URL"
+                  placeholder="Enter a URL"
                   className="relative z-0 focus:ring-green-500 focus:outline-none w-full text-sm leading-6 text-white-900 placeholder-slate-400 rounded-md py-2 pl-5 ring-1 ring-slate-200 shadow-sm pr-10"
                 />
                 {url.length > 0 && (

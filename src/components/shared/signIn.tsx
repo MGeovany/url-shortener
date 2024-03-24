@@ -7,7 +7,7 @@ export function SignInButton() {
     <>
       <p className="mt-10 text-md font-bold text-center">
         <a
-          className="text-green-500 hover:underline hover:cursor-pointer"
+          className="text-green-500 hover:underline hover:cursor-pointer w-full"
           onClick={() => setShowSignInModal(true)}
         >
           Sign In

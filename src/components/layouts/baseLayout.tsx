@@ -21,7 +21,7 @@ const BaseLayout = ({
         <meta name="title" content={title} />
       </Head>
       <Navbar />
-      <main className="bg-[url('/bg/8.png')] md:bg-auto xs:bg-cover md:py-20 xs:py-20">
+      <main className="bg-[url('/bg/8.png')] md:bg-auto xs:bg-cover min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20">
         {children}
       </main>
       <Footer />

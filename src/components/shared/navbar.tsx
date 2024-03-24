@@ -24,7 +24,7 @@ export function Navbar() {
               </a>
             </li>
             <div className="flex flex-row">
-              <li className="mx-5 flex items-center text-sm hover:underline  justify-end">
+              <li className="mx-5 flex items-center text-sm hover:underline justify-end">
                 {currentPath === "/" ? (
                   <Link href={"/dashboard"}>Dashboard</Link>
                 ) : (
