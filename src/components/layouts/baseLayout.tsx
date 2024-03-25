@@ -23,7 +23,10 @@ const BaseLayout = ({
           property="twitter:image"
           content={`${BASE_URL_PRODUCTION}/twitter-preview.webp`}
         />
-        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:card"
+          content={`${BASE_URL_PRODUCTION}/twitter-preview.webp`}
+        />
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta name="title" content={title} />
