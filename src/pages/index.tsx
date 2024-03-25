@@ -13,6 +13,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { INVALID_URL_TOAST, LINK_DELETED_TOAST } from "../notifications";
 import { createShortLink, deleteLink } from "@/api";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 interface HomeProps {
   initialLinks: LinkData[];
@@ -80,13 +81,7 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
     <>
       <BaseLayout>
         <div className="flex flex-col justify-center items-center font-bold text-2xl">
-          <picture>
-            <img
-              className="m-0 h-48 rounded-2xl object-cover w-full"
-              src="/zoro/zoroP.png"
-              alt={"zoro"}
-            />
-          </picture>
+          <Image width={400} height={100} src="/bg/zoro.avif" alt="zoro" />
           <h1 className="md:text-9xl xs:text-7xl">
             zoro.<span className="text text-green-400">cut</span>
           </h1>
