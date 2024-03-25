@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSignInModal } from "../layouts/signInModal";
 import UserDropdown from "../layouts/userDropdown";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export function Navbar() {
   const { data: session, status } = useSession();
@@ -51,6 +52,7 @@ export function Navbar() {
           <SignInModal />
         </div>
       </div>
+      <SpeedInsights route={router.pathname} />;
     </div>
   );
 }

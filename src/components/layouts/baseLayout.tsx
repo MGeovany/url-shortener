@@ -3,8 +3,6 @@ import { ReactNode } from "react";
 import { Navbar } from "../shared";
 import { Footer } from "./footer";
 import { BASE_URL_PRODUCTION } from "@/utils/constants";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 interface BaseLayoutProps {
   children: ReactNode;
@@ -44,8 +42,6 @@ const BaseLayout = ({
       <Navbar />
       <main className="bg-[url('/bg/8.avif')] md:bg-auto xs:bg-cover min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20">
         {children}
-        <Analytics />
-        <SpeedInsights />
       </main>
       <Footer />
     </>
