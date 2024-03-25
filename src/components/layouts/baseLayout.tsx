@@ -21,19 +21,16 @@ const BaseLayout = ({
         <meta name="viewport" content="width=device-width" />
         <meta
           property="twitter:image"
-          content={`${BASE_URL_PRODUCTION}twitter-preview.webp`}
+          content={`${BASE_URL_PRODUCTION}/twitter-preview.webp`}
         />
-        <meta
-          property="twitter:card"
-          content={`${BASE_URL_PRODUCTION}twitter-preview.webp`}
-        />
+        <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta name="title" content={title} />
         <meta property="description" content={description} />
         <meta
           property="og:image"
-          content={`${BASE_URL_PRODUCTION}twitter-preview.webp`}
+          content={`${BASE_URL_PRODUCTION}/twitter-preview.webp`}
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
