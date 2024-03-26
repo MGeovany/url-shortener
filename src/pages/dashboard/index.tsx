@@ -1,13 +1,15 @@
+import { Fragment, useState } from "react";
+import { GetServerSidePropsContext } from "next";
+import { getSession, useSession } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
+
 import BaseLayout from "@/components/layouts/baseLayout";
 import { SignInButton } from "@/components/shared/signIn";
 import { UrlTable } from "@/components/shared/urlTable";
-import { getSession, useSession } from "next-auth/react";
-import { GetServerSidePropsContext } from "next";
-import { getAllUrls } from "lib/db";
-import { useState } from "react";
-import { LINK_DELETED_TOAST } from "@/notifications";
-import { Toaster } from "react-hot-toast";
+import { GENERAL_ERROR_TOAST, LINK_DELETED_TOAST } from "@/notifications";
 import { deleteLink } from "@/api";
+import { getAllUrls } from "lib/db";
+import { LoadingCircle } from "@/components/shared/icons";
 
 interface DashboardProps {
   links: LinkData[];
@@ -18,42 +20,48 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
   const [linkData, setLinkData] = useState<LinkData[]>(links);
 
   async function handleDeleteLink(linkId: number) {
-    const success = await deleteLink(linkId);
-    if (success) {
-      setLinkData(linkData.filter((link) => link.id !== linkId));
-      LINK_DELETED_TOAST();
+    try {
+      const success = await deleteLink(linkId);
+      if (success) {
+        setLinkData((prevLinkData) =>
+          prevLinkData.filter((link) => link.id !== linkId)
+        );
+        LINK_DELETED_TOAST();
+      }
+    } catch (error) {
+      GENERAL_ERROR_TOAST(error);
+      console.error("Error deleting link:", error);
     }
   }
+
   return (
-    <>
-      <BaseLayout>
-        <div className="flex flex-col font-bold text-xl md:p-10 w-full items-center">
-          <div className="md:w-3/5 xs:w-full">
-            {!session && status !== "loading" ? (
-              <SignInButton />
-            ) : (
-              <>
-                <div className="flex justify-start pl-4">
-                  <span className="text-gray-500">Dashboard /</span>
-                  Analytics
-                </div>
-                <div className="flex">
-                  {userSession ? (
-                    <UrlTable
-                      links={linkData}
-                      handleDeleteLink={handleDeleteLink}
-                    />
-                  ) : (
-                    <SignInButton />
-                  )}
-                </div>
-              </>
-            )}
-          </div>
+    <BaseLayout>
+      <div className="flex flex-col font-bold text-xl md:p-10 w-full items-center">
+        <div className="md:w-3/5 xs:w-full">
+          {status === "loading" && <LoadingCircle />}
+          {session && status !== "authenticated" && (
+            <Fragment>
+              <div className="flex justify-start pl-4">
+                <span className="text-gray-500">Dashboard /</span>
+                Analytics
+              </div>
+              <div className="flex">
+                {userSession ? (
+                  <UrlTable
+                    links={linkData}
+                    handleDeleteLink={handleDeleteLink}
+                  />
+                ) : (
+                  <SignInButton />
+                )}
+              </div>
+            </Fragment>
+          )}
+          {!session && status !== "loading" && <SignInButton />}
         </div>
-        <Toaster position="top-center" reverseOrder={false} gutter={8} />
-      </BaseLayout>
-    </>
+      </div>
+      <Toaster position="top-center" reverseOrder={false} gutter={8} />
+    </BaseLayout>
   );
 }
 

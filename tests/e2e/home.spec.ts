@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Home Page Sanity Test", () => {
+test.describe("Home Page", () => {
   test("should render the Home page with expected elements", async ({
     page,
   }) => {
@@ -20,7 +20,5 @@ test.describe("Home Page Sanity Test", () => {
 
     const signInMessage = await page.textContent("body");
     expect(signInMessage).toContain("Sign In to see all your URLs!");
-
-    await page.screenshot({ path: "homepage.png" });
   });
 });
