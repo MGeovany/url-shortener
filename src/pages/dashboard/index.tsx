@@ -10,6 +10,7 @@ import { GENERAL_ERROR_TOAST, LINK_DELETED_TOAST } from "@/notifications";
 import { deleteLink } from "@/api";
 import { getAllUrls } from "lib/db";
 import { LoadingCircle } from "@/components/shared/icons";
+import { getServerSidePropsUtil } from "@/utils/serverSideProps";
 
 interface DashboardProps {
   links: LinkData[];
@@ -65,18 +66,4 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
   );
 }
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const session = await getSession(context);
-
-  const email = session?.user?.email;
-  let response: any;
-  if (email) response = await getAllUrls(email);
-  return {
-    props: {
-      links: response ? JSON.parse(JSON.stringify(response.links)) : [],
-      userSession: session,
-    },
-  };
-};
+export const getServerSideProps = getServerSidePropsUtil;
