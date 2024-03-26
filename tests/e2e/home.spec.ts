@@ -24,11 +24,3 @@ test.describe("Home Page Sanity Test", () => {
     await page.screenshot({ path: "homepage.png" });
   });
 });
-
-// test("should render first page", async ({ page }) => {
-//   await page.goto("http://localhost:3000/");
-
-//   await expect(page).toHaveURL("http://localhost:3000");
-//   await expect(page.getByText("zoro.cut")).toBeVisible();
-//   await expect(page.getByText("URL Shortener")).toBeVisible();
-// });
