@@ -9,10 +9,10 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
   return (
-    <MantineProvider>
-      <SessionProvider session={session}>
+    <SessionProvider session={session}>
+      <MantineProvider>
         <Component {...pageProps} />
-      </SessionProvider>
-    </MantineProvider>
+      </MantineProvider>
+    </SessionProvider>
   );
 }
