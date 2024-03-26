@@ -16,24 +16,31 @@ const ShortIdPage: React.FC<ShortIdPageProps> = ({ shortId }) => {
 export default ShortIdPage;
 
 export async function getServerSideProps({ params }: { params: any }) {
-  const prisma = new PrismaClient();
-  const { shortId } = params;
+  try {
+    const prisma = new PrismaClient();
+    const { shortId } = params;
 
-  const data = await prisma.link.findUnique({
-    where: { shortUrl: shortId },
-  });
+    const data = await prisma.link.findUnique({
+      where: { shortUrl: shortId },
+    });
 
-  prisma.$disconnect();
+    prisma.$disconnect();
 
-  if (!data) {
+    if (!data) {
+      return {
+        redirect: { destination: "/" },
+      };
+    }
+
+    return {
+      redirect: {
+        destination: data.url,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data from the short url:", error);
     return {
       redirect: { destination: "/" },
     };
   }
-
-  return {
-    redirect: {
-      destination: data.url,
-    },
-  };
 }
