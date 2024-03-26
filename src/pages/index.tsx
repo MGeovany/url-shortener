@@ -12,7 +12,11 @@ import { RecentUrlsTable } from "@/components/shared/recentUrlsTable";
 import { SignInButton } from "@/components/shared/signIn";
 import { getAllUrls } from "lib/db";
 import { BASE_URL_PRODUCTION } from "@/utils/constants";
-import { INVALID_URL_TOAST, LINK_DELETED_TOAST } from "@/notifications";
+import {
+  GENERAL_ERROR_TOAST,
+  INVALID_URL_TOAST,
+  LINK_DELETED_TOAST,
+} from "@/notifications";
 import { createShortLink, deleteLink } from "@/api";
 
 interface HomeProps {
@@ -60,11 +64,12 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
           return "Short link created!";
         },
         error: (err) => {
+          GENERAL_ERROR_TOAST(err);
           return `${err}`;
         },
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return;
     }
   };
