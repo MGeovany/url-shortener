@@ -40,7 +40,14 @@ const BaseLayout = ({
         <title>{title}</title>
       </Head>
       <Navbar />
-      <main className="bg-[url('/bg/8.avif')] md:bg-auto xs:bg-cover min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20">
+      <main className="relative min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20">
+        <img
+          src={"/bg/8.avif"}
+          width={1000}
+          height={1000}
+          alt="bg"
+          className="absolute -z-50 w-full h-full blur-xl"
+        />
         {children}
       </main>
       <Footer />
