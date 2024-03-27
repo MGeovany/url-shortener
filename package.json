@@ -6,11 +6,12 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint && eslint .",
     "release": "standard-version",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:lint": "npm run lint"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
