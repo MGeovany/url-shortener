@@ -1,3 +1,4 @@
+import "@mantine/core/styles.css";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth";
@@ -10,7 +11,7 @@ export default function App({
 }: AppProps<{ session: Session }>) {
   return (
     <SessionProvider session={session}>
-      <MantineProvider>
+      <MantineProvider forceColorScheme="dark">
         <Component {...pageProps} />
       </MantineProvider>
     </SessionProvider>
