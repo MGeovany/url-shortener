@@ -1,6 +1,5 @@
 import { Fragment, useState } from "react";
-import { GetServerSidePropsContext } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 
 import BaseLayout from "@/components/layouts/baseLayout";
@@ -8,7 +7,6 @@ import { SignInButton } from "@/components/shared/signIn";
 import { UrlTable } from "@/components/shared/urlTable";
 import { GENERAL_ERROR_TOAST, LINK_DELETED_TOAST } from "@/notifications";
 import { deleteLink } from "@/api";
-import { getAllUrls } from "lib/db";
 import { LoadingCircle } from "@/components/shared/icons";
 import { getServerSidePropsUtil } from "@/utils/serverSideProps";
 
@@ -38,13 +36,12 @@ export default function Dashboard({ links, userSession }: DashboardProps) {
   return (
     <BaseLayout>
       <div className="flex flex-col font-bold text-xl md:p-10 w-full items-center">
-        <div className="md:w-3/5 xs:w-full">
+        <div className="md:w-3/5 xs:w-full flex flex-col justify-center">
           {status === "loading" && <LoadingCircle />}
-          {session && status !== "authenticated" && (
+          {session && status === "authenticated" && (
             <Fragment>
-              <div className="flex justify-start pl-4">
-                <span className="text-gray-500">Dashboard /</span>
-                Analytics
+              <div className="flex flex-row justify-start pl-4">
+                <span className="text-gray-500">Dashboard /</span> Analytics
               </div>
               <div className="flex">
                 {userSession ? (

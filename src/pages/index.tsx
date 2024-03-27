@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/react";
 import Image from "next/image";
 import { Plus, X } from "lucide-react";
 import { Tooltip } from "@mantine/core";
@@ -10,7 +8,6 @@ import { Toaster, toast } from "react-hot-toast";
 import BaseLayout from "@/components/layouts/baseLayout";
 import { RecentUrlsTable } from "@/components/shared/recentUrlsTable";
 import { SignInButton } from "@/components/shared/signIn";
-import { getAllUrls } from "lib/db";
 import { BASE_URL_PRODUCTION } from "@/utils/constants";
 import {
   GENERAL_ERROR_TOAST,
@@ -18,6 +15,7 @@ import {
   LINK_DELETED_TOAST,
 } from "@/notifications";
 import { createShortLink, deleteLink } from "@/api";
+import { getServerSidePropsUtil } from "@/utils/serverSideProps";
 
 interface HomeProps {
   initialLinks: LinkData[];
@@ -147,18 +145,4 @@ export default function Home({ initialLinks, userSession }: HomeProps) {
   );
 }
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const session = await getSession(context);
-
-  const email = session?.user?.email;
-  let response: any;
-  if (email) response = await getAllUrls(email);
-  return {
-    props: {
-      initialLinks: response ? JSON.parse(JSON.stringify(response.links)) : [],
-      userSession: session,
-    },
-  };
-};
+export const getServerSideProps = getServerSidePropsUtil;

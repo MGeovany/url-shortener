@@ -1,11 +1,12 @@
-import { getAllUrls } from "lib/db";
 import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getAllUrls } from "lib/db";
 
 export async function getServerSidePropsUtil(
   context: GetServerSidePropsContext
 ) {
-  const session = await getSession(context);
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   const email = session?.user?.email;
   let response: any;
