@@ -14,7 +14,7 @@ export async function getServerSidePropsUtil(
 
   return {
     props: {
-      links: response ? JSON.parse(JSON.stringify(response.links)) : [],
+      initialLinks: response ? JSON.parse(JSON.stringify(response.links)) : [],
       userSession: session,
     },
   };

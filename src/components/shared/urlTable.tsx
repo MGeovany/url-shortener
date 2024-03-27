@@ -14,12 +14,12 @@ interface UrlTableProps {
 export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
   const [activePage, setActivePage] = useState<number>(1);
 
-  const totalPages = Math.ceil(links.length / PAGINATION_SIZE);
+  const totalPages = Math.ceil(links?.length / PAGINATION_SIZE);
   const linksToShow = LINKS_PER_PAGE(links, activePage);
 
   return (
     <div className="mt-10 text-center w-full flex flex-col justify-center items-center">
-      {links.length === 0 ? (
+      {links?.length === 0 ? (
         <p>No short links yet ⭐️</p>
       ) : (
         <table className="table-auto mt-5 text-sm text-left w-full">
@@ -77,7 +77,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
           </tbody>
         </table>
       )}
-      {links.length > 4 && (
+      {links?.length > 4 && (
         <div className="mt-10 flex flex-col items-center justify-center">
           <MoreHorizontal className="mb-5" />
           <Pagination

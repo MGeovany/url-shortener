@@ -46,7 +46,7 @@ const BaseLayout = ({
           width={1000}
           height={1000}
           alt="bg"
-          className="absolute -z-50 w-full h-full blur-xl"
+          className="absolute -z-50 w-full h-full blur-xl min-w-[2500px] -rotate-180"
         />
         {children}
       </main>
