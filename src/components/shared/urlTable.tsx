@@ -22,7 +22,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
       {links?.length === 0 ? (
         <p>No short links yet ⭐️</p>
       ) : (
-        <table className="table-auto mt-5 text-sm text-left w-full">
+        <table className="table-auto mt-5 text-sm text-left w-full h-[30rem] min-h-[30rem]">
           <thead className="text-xs uppercase text-white">
             <tr className="text-md p-4">
               <th className="px-6 py-3">domain</th>
@@ -35,7 +35,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
               <tr
                 key={index}
                 className={
-                  "border-b border-gray-700 bg-white-800  hover:bg-white hover:text-black"
+                  "border-b border-gray-400  hover:bg-white hover:text-black px-2 w-full"
                 }
               >
                 <td className="text-left p-4 py-5">
@@ -91,7 +91,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                   backgroundColor: "white",
                   color: theme.colors.dark,
                 },
-                "&[data-active]": {
+                "&[dataActive]": {
                   backgroundColor: theme.colors.teal[5],
                   color: "white",
                 },
