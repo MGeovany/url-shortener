@@ -1,10 +1,15 @@
-name: Test and Lint
+name: Build, Test, and Lint
 
 on:
-  push:
-    branches: [main, master]
   pull_request:
-    branches: [main, master]
+    branches:
+      - dev
+  push:
+    branches:
+      - dev
+      - main
+  workflow_call:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -19,6 +24,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Build
+        run: npm run build
 
       - name: Start server
         run: npm start &
