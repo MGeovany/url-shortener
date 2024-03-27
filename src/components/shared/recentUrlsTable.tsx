@@ -4,6 +4,7 @@ import { CopyButton } from "./copyButton";
 import { X, MoreHorizontal } from "lucide-react";
 import { Tooltip } from "@mantine/core";
 import { VISIBLE_LINKS } from "@/utils/tableConfig";
+import Link from "next/link";
 
 interface RecentUrlsTableProps {
   linkData: LinkData[];
@@ -42,14 +43,14 @@ export function RecentUrlsTable({
                 </td>
                 <td className={`${index === 4 && "pointer-events-none"}`}>
                   <div className="flex flex-row sm:w-full xs:w-40">
-                    <a
+                    <Link
                       className="text-green-500 mx-3 justify-center items-center overflow-hidden whitespace-nowrap inline-block"
                       href={link?.shortUrl}
                       target="_blank"
                     >
                       {BASE_URL_PRODUCTION}
                       {link.shortUrl}
-                    </a>
+                    </Link>
                   </div>
                 </td>
                 <td className={`${index === 4 && "pointer-events-none"}`}>
@@ -79,12 +80,12 @@ export function RecentUrlsTable({
         <div className="mt-10 flex flex-col items-center justify-center">
           <span>See More Links</span>
           <MoreHorizontal className="mb-5" />
-          <a
+          <Link
             href="/dashboard"
             className="xs:mt-5 xs:ml-0 justify-evenly md:mt-0 w-48 hover:bg-green-500 group flex items-center rounded-md bg-green-600 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
           >
             Go to my Dashboard
-          </a>
+          </Link>
         </div>
       )}
     </div>

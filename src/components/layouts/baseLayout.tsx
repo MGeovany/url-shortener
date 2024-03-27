@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { Navbar } from "../shared";
 import { Footer } from "./footer";
 import { BASE_URL_PRODUCTION } from "@/utils/constants";
+import Image from "next/image";
 
 interface BaseLayoutProps {
   children: ReactNode;
@@ -41,7 +42,7 @@ const BaseLayout = ({
       </Head>
       <Navbar />
       <main className="relative min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20">
-        <img
+        <Image
           src={"/bg/8.avif"}
           width={1000}
           height={1000}

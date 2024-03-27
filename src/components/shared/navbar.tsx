@@ -18,10 +18,10 @@ export function Navbar() {
       <div className="mx-5 flex h-16 max-w-screen-xl items-center md:justify-end xs:justify-end xl:mx-auto">
         <ul className="flex flex-row font-semibold w-full justify-between">
           <li className="font-extrabold hover:underline text-xl">
-            <a href="/">
+            <Link href="/">
               zoro.
               <span className="text-green-400">cut</span>
-            </a>
+            </Link>
           </li>
           <div className="flex flex-row">
             <li className="mx-5 flex items-center text-sm hover:underline justify-end">
