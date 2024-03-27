@@ -40,7 +40,7 @@ export default function Dashboard({
     <BaseLayout>
       <div className="flex flex-col font-bold text-xl md:p-10 w-full items-center">
         <div className="md:w-3/5 xs:w-full flex flex-col items-center">
-          {status === "loading" && <LoadingCircle />}
+          {userSession && status === "loading" && <LoadingCircle />}
           {session && status === "authenticated" && (
             <Fragment>
               <div className="flex flex-row justify-start pl-4 w-full">
@@ -56,7 +56,7 @@ export default function Dashboard({
               )}
             </Fragment>
           )}
-          {!session && status !== "loading" && <SignInButton />}
+          {!session && <SignInButton />}
         </div>
       </div>
       <Toaster position="top-center" reverseOrder={false} gutter={8} />

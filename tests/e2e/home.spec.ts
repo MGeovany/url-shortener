@@ -4,7 +4,7 @@ test.describe("Home Page", () => {
   test("should render the Home page with expected elements", async ({
     page,
   }) => {
-    await page.goto("http://localhost:3000");
+    await page.goto("./");
 
     // Verify that the main heading is rendered
     const mainHeading = await page.waitForSelector("h1");
@@ -20,5 +20,6 @@ test.describe("Home Page", () => {
 
     const signInMessage = await page.textContent("body");
     expect(signInMessage).toContain("Sign In to see all your URLs!");
+    await page.screenshot({ path: "home.png", fullPage: true });
   });
 });
