@@ -11,6 +11,15 @@ on:
   workflow_call:
   workflow_dispatch:
 
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  ENVIRONMENT_URL: ${{ secrets.ENVIRONMENT_URL }}
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+  NEXTAUTH_URL_INTERNAL: ${{ secrets.NEXTAUTH_URL_INTERNAL }}
+
 jobs:
   test:
     timeout-minutes: 60
