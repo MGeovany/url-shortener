@@ -5,6 +5,7 @@ import { X, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { Pagination, Tooltip } from "@mantine/core";
 import { LINKS_PER_PAGE } from "@/utils/tableConfig";
+import Link from "next/link";
 
 interface UrlTableProps {
   links: LinkData[];
@@ -15,7 +16,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
   const [activePage, setActivePage] = useState<number>(1);
 
   const totalPages = Math.ceil(links?.length / PAGINATION_SIZE);
-  const linksToShow = LINKS_PER_PAGE(links, activePage);
+  const linksToShow: LinkData[] = LINKS_PER_PAGE(links, activePage);
 
   return (
     <div className="mt-10 text-center w-full flex flex-col justify-center items-center">
@@ -43,7 +44,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                 </td>
                 <td>
                   <div className="flex flex-row sm:w-full xs:w-40">
-                    <a
+                    <Link
                       className="text-green-500 mx-3 justify-center items-center overflow-hidden whitespace-nowrap inline-block"
                       href={link?.shortUrl}
                       target="_blank"
@@ -51,7 +52,7 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
                     >
                       {BASE_URL_PRODUCTION}
                       {link.shortUrl}
-                    </a>
+                    </Link>
                   </div>
                 </td>
                 <td>
@@ -100,12 +101,12 @@ export function UrlTable({ links, handleDeleteLink }: UrlTableProps) {
           />
         </div>
       )}
-      <a
+      <Link
         href="/"
         className="xs:mt-5 xs:ml-0 justify-evenly md:mt-5 w-48 hover:bg-green-500 group flex items-center rounded-md bg-green-600 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm"
       >
         Go to cut URLs
-      </a>
+      </Link>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 interface LinkData {
   id: number;
   url: string;
-  shortUrl?: string;
+  shortUrl: string;
   createdAt?: Date;
   deleted?: boolean;
   userId?: number | null;
