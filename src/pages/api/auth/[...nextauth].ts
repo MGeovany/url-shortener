@@ -1,6 +1,6 @@
-import { createUser } from "lib/db";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { createUser } from "lib/db";
 
 export const authOptions: NextAuthOptions = {
   providers: [
