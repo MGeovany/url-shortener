@@ -5,7 +5,10 @@ export default function getDomainNameFromUrl(urlString: string): string | null {
       return null;
     }
 
-    const { hostname } = new URL(urlString);
+    const prefixedUrl = urlString.includes("://")
+      ? urlString
+      : `http://${urlString}`;
+    const { hostname } = new URL(prefixedUrl);
     const domainName = hostname.replace(/^www\./, "");
     return domainName;
   } catch (error) {
