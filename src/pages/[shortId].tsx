@@ -15,7 +15,16 @@ const ShortIdPage: React.FC<ShortIdPageProps> = ({ shortId }) => {
 };
 export default ShortIdPage;
 
-export async function getServerSideProps({ params }: { params: any }) {
+/**
+ * Retrieves the url stored on the database and returns a redirect destination.
+ * @param params - Expects a `shortId` property.
+ * @returns A redirect object with the destination set to either `"/"` or the `url` property of the retrieved data.
+ */
+export async function getServerSideProps({
+  params,
+}: {
+  params: { shortId: string };
+}): Promise<{ redirect: { destination: string } }> {
   try {
     const prisma = new PrismaClient();
     const { shortId } = params;
