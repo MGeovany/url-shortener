@@ -13,7 +13,7 @@ export function Navbar() {
 
   return (
     <div
-      className={`fixed md:px-10 top-0 w-full z-30 transition-all bg-black border-gray-900 border-b-2`}
+      className={`fixed md:px-10 top-0 w-full z-30 transition-all bg-black border-gray-900 border-b-0`}
     >
       <div className="mx-5 flex h-16 max-w-screen-xl items-center md:justify-end xs:justify-end xl:mx-auto">
         <ul className="flex flex-row font-semibold w-full justify-between">

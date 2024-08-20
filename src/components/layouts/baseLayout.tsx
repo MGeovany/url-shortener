@@ -41,14 +41,7 @@ const BaseLayout = ({
         <title>{title}</title>
       </Head>
       <Navbar />
-      <main className="relative min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20">
-        <Image
-          src={"/bg/8.avif"}
-          width={1000}
-          height={1000}
-          alt="bg"
-          className="absolute -z-50 w-full h-full blur-xl min-w-[2500px] -rotate-180"
-        />
+      <main className="relative min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20 bg-black">
         {children}
       </main>
       <Footer />
