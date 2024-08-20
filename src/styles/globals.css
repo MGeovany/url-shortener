@@ -19,6 +19,12 @@ a {
   text-decoration: none;
 }
 
+.bg-dots {
+  background: linear-gradient(90deg, #050505 15px, transparent 1%) 50%,
+    linear-gradient(#050505 15px, transparent 1%) 50%, hsla(0, 0%, 100%, 0.16);
+  background-size: 16px 16px;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

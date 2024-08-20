@@ -41,7 +41,7 @@ const BaseLayout = ({
         <title>{title}</title>
       </Head>
       <Navbar />
-      <main className="relative min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20 bg-black">
+      <main className="relative min-h-[calc(100vh_-_8rem)] flex justify-center items-center py-20 bg-black bg-dots">
         {children}
       </main>
       <Footer />
